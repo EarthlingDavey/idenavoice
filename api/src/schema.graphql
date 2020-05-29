@@ -1,0 +1,77 @@
+type User {
+  address: String!
+  transactions: [Transaction] @relation(name: "USER_TX", direction: "IN")
+  age: Int
+  state: String
+}
+
+enum State {
+  Newbie
+  Verified
+  Human
+  Suspended
+}
+
+type Question {
+  id: ID!
+  name: String!
+  hash: String!
+  answers: [Answer] @relation(name: "ANSWER_FOR", direction: "OUT")
+  timestamp: DateTime
+  transaction: Transaction @relation(name: "QUESTION_IN", direction: "IN")
+  allAnswersTransactions: [Transaction]
+    @cypher(
+      statement: "MATCH (this)-[r:ANSWER_FOR]->(a:Answer)<-[r2:TX_CHOSE]-(t:Transaction) RETURN t ORDER BY t.timestamp DESC"
+    )
+  allAnswersTransactionsByState(state: [State]): [Transaction]
+    @cypher(
+      statement: "MATCH (this)-[r:ANSWER_FOR]->(a:Answer)<-[r2:TX_CHOSE]-(t:Transaction)-[:USER_TX]->(u:User)  RETURN t ORDER BY t.timestamp DESC"
+    )
+  allAnswers: [Answer]
+    @cypher(statement: "MATCH (this)-[r:ANSWER_FOR]->(a:Answer) RETURN a")
+  # user: User @relation(name: "USER_QUESTION", direction: "OUT")
+}
+
+type TxChose @relation(name: "TX_CHOSE") {
+  from: Transaction
+  to: Answer
+  old: Boolean
+}
+
+type Answer {
+  name: String!
+  question: Question! @relation(name: "ANSWER_FOR", direction: "IN")
+  transactions: [Transaction] @relation(name: "TX_CHOSE", direction: "IN")
+  txChose: TxChose
+  countNewestOnly: Int
+    @cypher(
+      statement: "MATCH (this)<-[r:TX_CHOSE]-(tx:Transaction)-[:USER_TX]->(u:User)  WHERE ( r.old = false) AND (u.state IN ['Newbie', 'Verified', 'Human', 'Suspended'] ) RETURN COUNT(r)"
+    )
+  countOldOnly: Int
+    @cypher(
+      statement: "MATCH (this)<-[r:TX_CHOSE]-(tx:Transaction)-[:USER_TX]->(u:User)  WHERE ( r.old = true) AND (u.state IN ['Newbie', 'Verified', 'Human', 'Suspended'] ) RETURN COUNT(r)"
+    )
+  # onChain: Boolean!
+  # user: User @relation(name: "USER_QUESTION", direction: "OUT")
+}
+
+type Transaction {
+  hash: String!
+  questions: [Question] @relation(name: "QUESTION_IN", direction: "OUT")
+  answer: Answer @relation(name: "TX_CHOSE", direction: "OUT")
+  timestamp: DateTime
+  txChose: TxChose
+  user: User @relation(name: "USER_TX", direction: "OUT")
+}
+
+type Query {
+  viewer: User
+  # usersBySubstring(substring: String): [User]
+  #   @cypher(
+  #     statement: "MATCH (u:User) WHERE u.name CONTAINS $substring RETURN u"
+  #   )
+}
+type Mutation {
+  signOut: String
+  # askQuestion: Question!
+}

@@ -1,0 +1,15 @@
+{
+  "version": 2,
+  "builds": [
+    { "src": "api/src/index.js", "use": "@now/node" },
+    {
+      "src": "ui-next/package.json",
+      "use": "@now/next"
+    }
+  ],
+  "routes": [
+    { "src": "/graphql(.*)", "dest": "api/src/index.js" },
+    { "src": "/auth(.*)", "dest": "api/src/index.js" },
+    { "src": "/(.*)", "dest": "/ui-next/$1", "continue": true }
+  ]
+}

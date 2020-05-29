@@ -1,0 +1,32 @@
+version: '3'
+
+services:
+
+  api:
+    build: ./api
+    ports:
+      - 4001:4001
+    environment:
+      - GRAPHQL_LISTEN_PORT=4001
+      - GRAPHQL_URI=http://api:4001/graphql
+      - JWT_SECRET=abc
+    env_file:
+      - ./api/.env
+    volumes:
+      - ./api:/app
+
+  ui:
+    build: ./ui-next
+    volumes:
+      - ./ui-next:/var/app
+    ports:
+      - '80:80'
+    environment:
+      - NEXT_TELEMETRY_DEBUG=1 # data will be printed but not sent to nextjs.org
+      - ROOT_URL=http://localhost
+      - REACT_APP_GRAPHQL_URI=/graphql
+      - PROXY=http://api:4001/graphql
+    links:
+    - api
+    depends_on:
+    - api
