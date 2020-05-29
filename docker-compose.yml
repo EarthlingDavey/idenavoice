@@ -24,8 +24,7 @@ services:
     environment:
       - NEXT_TELEMETRY_DEBUG=1 # data will be printed but not sent to nextjs.org
       - ROOT_URL=http://localhost
-      - REACT_APP_GRAPHQL_URI=/graphql
-      - PROXY=http://api:4001/graphql
+      - GRAPHQL_URI=http://api:4001/graphql
     links:
     - api
     depends_on:

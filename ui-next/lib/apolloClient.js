@@ -3,7 +3,6 @@ import { InMemoryCache } from 'apollo-cache-inmemory';
 import { HttpLink } from 'apollo-link-http';
 import fetch from 'isomorphic-unfetch';
 import gql from 'graphql-tag';
-import { endpoint } from '../config';
 import Question from '../components/molecules/Question';
 import { GET_QUEUED_QUESTIONS } from '../components/molecules/QueuedQuestions';
 
@@ -25,7 +24,7 @@ export default function createApolloClient(initialState, ctx) {
   //     };
 
   const httpLink = new HttpLink({
-    uri: endpoint, // Server URL (must be absolute)
+    uri: process.env.endpoint, // Server URL (must be absolute)
     credentials: 'same-origin', // Additional fetch() options like `credentials` or `headers`
     fetch,
   });
