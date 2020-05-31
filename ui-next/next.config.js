@@ -7,6 +7,10 @@ if (process.env.NODE_ENV !== 'production') {
 if (process.env.GRAPHQL_URI) {
   endpoint = process.env.GRAPHQL_URI;
 }
+let endpointWeb = endpoint;
+if (process.env.GRAPHQL_WEB_URI) {
+  endpointWeb = process.env.GRAPHQL_WEB_URI;
+}
 
 module.exports = {
   serverRuntimeConfig: {
@@ -17,5 +21,6 @@ module.exports = {
       ? 'https://' + process.env.VERCEL_URL
       : 'http://localhost',
     endpoint,
+    endpointWeb,
   },
 };

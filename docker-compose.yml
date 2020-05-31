@@ -25,6 +25,7 @@ services:
       - NEXT_TELEMETRY_DEBUG=1 # data will be printed but not sent to nextjs.org
       - ROOT_URL=http://localhost
       - GRAPHQL_URI=http://api:4001/graphql
+      - GRAPHQL_WEB_URI=http://localhost:4001/graphql
     links:
     - api
     depends_on:

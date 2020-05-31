@@ -23,8 +23,11 @@ export default function createApolloClient(initialState, ctx) {
   //       console.log('SSR');
   //     };
 
+  console.log(process.browser);
+  console.log(process.env.endpointWeb);
+
   const httpLink = new HttpLink({
-    uri: process.env.endpoint, // Server URL (must be absolute)
+    uri: process.browser ? process.env.endpointWeb : process.env.endpoint, // Server URL (must be absolute)
     credentials: 'same-origin', // Additional fetch() options like `credentials` or `headers`
     fetch,
   });
