@@ -64,6 +64,15 @@ export default function SortFilterBar(props) {
       >
         Human
       </Checkbox>
+      <Checkbox
+        name="userState"
+        value="Suspended"
+        checked={props.userState.Suspended}
+        handleChange={props.handleChange}
+        // disabled={true}
+      >
+        Suspended
+      </Checkbox>
       {/* <Checkbox
         name={'reported'}
         checked={props.reported}

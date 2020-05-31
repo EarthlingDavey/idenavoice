@@ -77,7 +77,7 @@ function Questions(props) {
 
 class QuestionsList extends React.Component {
   state = {
-    userState: { Human: true, Newbie: true, Verified: true },
+    userState: { Human: true, Newbie: true, Verified: true, Suspended: true },
     reported: true,
     orderBy: 'timestamp_desc',
   };
