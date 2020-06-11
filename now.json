@@ -11,5 +11,8 @@
     { "src": "/graphql(.*)", "dest": "api/src/index.js" },
     { "src": "/auth(.*)", "dest": "api/src/index.js" },
     { "src": "/(.*)", "dest": "/ui-next/$1", "continue": true }
-  ]
+  ],
+  "github": {
+    "silent": true
+  }
 }
