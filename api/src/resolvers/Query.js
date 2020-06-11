@@ -60,9 +60,19 @@ const Query = {
       }
     }
   },
+
   async Transaction(_parent, _args, ctx, _info) {
     // console.log('boop');
     return neo4jgraphql(_parent, _args, ctx, _info);
+  },
+
+  async serverStatus(_parent, _args, context, _info) {
+    return [
+      { name: 'frontend', code: 200, message: 'ok' },
+      { name: 'api', code: 200, message: 'ok' },
+      { name: 'node', code: 200, message: 'ok' },
+      { name: 'database', code: 200, message: 'ok' },
+    ];
   },
 };
 

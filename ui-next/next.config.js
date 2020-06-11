@@ -12,6 +12,16 @@ if (process.env.GRAPHQL_WEB_URI) {
   endpointWeb = process.env.GRAPHQL_WEB_URI;
 }
 
+let deployUrl = 'http://localhost';
+
+if (
+  process.env.VERCEL_GITHUB_ORG &&
+  process.env.VERCEL_GITHUB_REPO &&
+  process.env.VERCEL_GITHUB_COMMIT_SHA
+) {
+  deployUrl = `https://github.com/${process.env.VERCEL_GITHUB_ORG}/${process.env.VERCEL_GITHUB_REPO}/commit/${process.env.VERCEL_GITHUB_COMMIT_SHA}`;
+}
+
 module.exports = {
   serverRuntimeConfig: {
     JWT_SECRET: 'changeme',
@@ -22,5 +32,6 @@ module.exports = {
       : 'http://localhost',
     endpoint,
     endpointWeb,
+    deployUrl,
   },
 };

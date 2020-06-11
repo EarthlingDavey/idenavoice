@@ -64,8 +64,15 @@ type Transaction {
   user: User @relation(name: "USER_TX", direction: "OUT")
 }
 
+type Status {
+  name: String
+  code: Int
+  message: String
+}
+
 type Query {
   viewer: User
+  serverStatus: [Status]
   # usersBySubstring(substring: String): [User]
   #   @cypher(
   #     statement: "MATCH (u:User) WHERE u.name CONTAINS $substring RETURN u"
