@@ -36,16 +36,19 @@ export default function Header(props) {
             <a>About</a>
           </Link>
         </li> */}
-        <li>
+        {/* <li>
           {' '}
           <SignInButton></SignInButton>
-        </li>
-        <li>
+        </li> */}
+        {/* <li>
           <Link href="/signout">
             <a>Sign out</a>
           </Link>
-        </li>
+        </li> */}
       </ul>
+      <div style={{ display: 'none' }}>
+        <SignInButton></SignInButton>
+      </div>
     </HeaderStyles>
   );
 }
