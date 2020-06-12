@@ -3,7 +3,9 @@ import jwt from 'jsonwebtoken';
 import dotenv from 'dotenv';
 dotenv.config();
 const JWT_SECRET = process.env.JWT_SECRET;
-const WEB_URI = process.env.WEB_URI;
+const webUrl = process.env.VERCEL_URL
+  ? 'https://' + process.env.VERCEL_URL
+  : process.env.WEB_URI;
 import { getUserByToken } from '../../controllers/auth';
 
 async function processPayload(req, driver) {
@@ -37,7 +39,7 @@ export default async (req, res, driver) => {
     console.log({ dbUser });
 
     if (!dbUser) {
-      res.redirect(301, WEB_URI + '/signup');
+      res.redirect(301, webUrl + '/signup');
     }
 
     const token = jwt.sign(
@@ -59,6 +61,6 @@ export default async (req, res, driver) => {
       })
     );
 
-    res.redirect(301, WEB_URI + '/');
+    res.redirect(301, webUrl);
   }
 };
