@@ -23,3 +23,5 @@ yarn-error.log*
 ui-next/.next
 ui-next/public/localhost_files
 localhost.htm
+nginx/error.log
+nginx/error_log.log

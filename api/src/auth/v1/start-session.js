@@ -43,6 +43,7 @@ async function processPayload(req, driver) {
   response.data = {
     nonce: user.nonce,
   };
+  console.log('response to start: ', response);
   return response;
 }
 

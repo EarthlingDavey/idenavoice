@@ -28,7 +28,7 @@ async function processPayload(req, driver) {
   let session = driver.session();
   const dbUser = await getUserByToken(session, req.body.token);
   session.close();
-  // console.log({ dbUser });
+  console.log({ dbUser });
 
   const nonce = dbUser.nonce;
   const signature = req.body.signature;
@@ -36,7 +36,7 @@ async function processPayload(req, driver) {
   let addr;
 
   try {
-    const nonceHash = await keccak256(rlp.encode(nonce));
+    const nonceHash = keccak256(keccak256(Buffer.from(nonce, 'utf-8')));
     const { v, r, s } = await fromRpcSig(signature);
     // console.log({ v });
     const pubKey = await ecrecover(nonceHash, v, r, s);
@@ -55,7 +55,10 @@ async function processPayload(req, driver) {
     response.data = {
       authenticated: false,
     };
+    console.log('1: ' + addr);
+    console.log('2: ' + dbUser.address);
     if (addr === dbUser.address) {
+      console.log('wow: ' + addr);
       response.data.authenticated = true;
       // The user is authe'd set a cookie jwt and/or uprate the db here
       //

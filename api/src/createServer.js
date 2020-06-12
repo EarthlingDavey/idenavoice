@@ -15,7 +15,12 @@ const http = require('http');
 
 const corsOptions = {
   credentials: true,
-  origin: ['http://localhost', 'http://ui'],
+  origin: [
+    'http://localhost',
+    'http://localhost:80',
+    'http://localhost:4001',
+    'http://ui',
+  ],
 };
 
 /*
@@ -82,4 +87,4 @@ async function createServer() {
   return server;
 }
 
-module.exports = createServer;
+module.exports = { createServer, driver };

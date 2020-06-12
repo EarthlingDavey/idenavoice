@@ -12,14 +12,19 @@ import callback from './auth/v1/callback';
 var bodyParser = require('body-parser');
 const resolvers = require('./resolvers');
 const http = require('http');
-const createServer = require('./createServer');
+const { createServer, driver } = require('./createServer');
 
 // set environment variables from ../.env
 dotenv.config();
 
 const corsOptions = {
   credentials: true,
-  origin: ['http://localhost', 'http://ui'],
+  origin: [
+    'http://localhost',
+    'http://localhost:80',
+    'http://localhost:4001',
+    'http://ui',
+  ],
 };
 
 const runServer = async () => {
@@ -30,8 +35,10 @@ const runServer = async () => {
   const server = await createServer();
 
   // // decode the JWT so we can get the user Id on each request
-  // server.express.use((req, res, next) => {
+  // app.use((req, res, next) => {
   //   const { token } = req.cookies;
+  //   console.log(req.cookies);
+
   //   if (token) {
   //     const { address } = jwt.verify(token, process.env.JWT_SECRET);
   //     // put the userId onto the req for future requests to access

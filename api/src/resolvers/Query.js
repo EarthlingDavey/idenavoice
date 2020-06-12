@@ -47,9 +47,10 @@ function throttle(func, wait, options) {
 const Query = {
   async viewer(_parent, _args, context, _info) {
     console.log('viewer');
-    console.log(context);
+    // console.log(context.req.cookies);
     const token =
       context.cookies && context.cookies.token ? context.cookies.token : null;
+    // console.log({ token });
     if (token) {
       try {
         const { address } = jwt.verify(token, JWT_SECRET);

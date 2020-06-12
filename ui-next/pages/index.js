@@ -18,9 +18,9 @@ const ViewerQuery = gql`
 `;
 
 const Index = () => {
-  // const { data, loading } = useQuery(ViewerQuery);
+  const { data, loading } = useQuery(ViewerQuery);
 
-  // console.log(data);
+  console.log(data);
 
   // if (
   //   loading === false &&
@@ -42,6 +42,7 @@ const Index = () => {
   return (
     <App>
       <AskRow></AskRow>
+      {data && data.viewer && <p>logged in</p>}
       <AnswerRow></AnswerRow>
       <AboutRow></AboutRow>
       {/* <Ask></Ask> */}

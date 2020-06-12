@@ -23,14 +23,14 @@ async function getLastBlock(url, key) {
     id: nodeRequestId++,
     key,
   };
-  console.log(JSON.stringify(body));
+  // console.log(JSON.stringify(body));
   const options = {
     method: 'POST',
     body: JSON.stringify(body),
     headers: { 'Content-Type': 'application/json' },
   };
   const response = await safeFetch(url, options);
-  console.log(response);
+  // console.log(response);
   const json = await response.json();
   return json.result ? json.result : false;
 }

@@ -20,13 +20,22 @@ services:
     volumes:
       - ./ui-next:/var/app
     ports:
-      - '80:80'
+      - '3000:3000'
     environment:
       - NEXT_TELEMETRY_DEBUG=1 # data will be printed but not sent to nextjs.org
       - ROOT_URL=http://localhost
       - GRAPHQL_URI=http://api:4001/graphql
-      - GRAPHQL_WEB_URI=http://localhost:4001/graphql
+      - GRAPHQL_WEB_URI=http://localhost/graphql
     links:
     - api
     depends_on:
     - api
+
+  nginx: 
+    image: nginx:latest
+    container_name: production_nginx
+    volumes:
+      - ./nginx:/etc/nginx
+    ports:
+      - 80:80
+      - 443:443
