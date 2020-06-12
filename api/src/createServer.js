@@ -32,6 +32,7 @@ const schema = makeAugmentedSchema({
   config: {
     mutation: false,
   },
+  allowUndefinedInResolve: true,
 });
 
 /*

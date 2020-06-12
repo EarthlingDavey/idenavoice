@@ -31,7 +31,7 @@ export default function Questions(props) {
     pollInterval: 3500,
   });
 
-  console.log(result);
+  // console.log(result);
 
   return (
     <>

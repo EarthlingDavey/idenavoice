@@ -19,7 +19,7 @@ if (
   process.env.VERCEL_GITHUB_REPO &&
   process.env.VERCEL_GITHUB_COMMIT_SHA
 ) {
-  deployUrl = `https://github.com/${process.env.VERCEL_GITHUB_ORG}/${process.env.VERCEL_GITHUB_REPO}/commit/${process.env.VERCEL_GITHUB_COMMIT_SHA}`;
+  deployUrl = `https://github.com/${process.env.VERCEL_GITHUB_ORG}/${process.env.VERCEL_GITHUB_REPO}/tree/${process.env.VERCEL_GITHUB_COMMIT_SHA}`;
 }
 
 module.exports = {

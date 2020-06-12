@@ -1,6 +1,9 @@
 import React, { useState, useEffect, useRef } from 'react';
+
 import Link from 'next/link';
+
 import { FooterStyles } from './FooterStyles';
+import { StatusList } from '../atoms/StatusList';
 import { throttle } from '../../lib/utils';
 
 export default () => {
@@ -17,32 +20,12 @@ export default () => {
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
-  const frontendText =
-    process.env.deployUrl === 'http://localhost'
-      ? 'running locally'
-      : 'deployed from GitHub';
-
   return (
     <FooterStyles height={height}>
       <div ref={ref} className="wrap">
         <div className="inner">
           <h2>Status</h2>
-          <ul>
-            {/* <li>{height}</li> */}
-            <li>
-              Frontend: OK -{' '}
-              <a
-                target="_blank"
-                rel="noopener noreferrer"
-                href={process.env.deployUrl}
-              >
-                {frontendText}
-              </a>
-            </li>
-            {/* <li>API</li>
-            <li>Node</li>
-            <li>Database</li> */}
-          </ul>
+          <StatusList></StatusList>
           {/* <h2>Footer</h2>
           <ul>
             <li>

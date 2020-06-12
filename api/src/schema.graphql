@@ -64,10 +64,16 @@ type Transaction {
   user: User @relation(name: "USER_TX", direction: "OUT")
 }
 
+type MyLink {
+  text: String
+  href: String
+}
+
 type Status {
   name: String
   code: Int
   message: String
+  links: [MyLink]
 }
 
 type Query {
