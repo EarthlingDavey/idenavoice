@@ -28,9 +28,9 @@ services:
       - GRAPHQL_URI=http://api:4001/graphql
       - GRAPHQL_WEB_URI=http://localhost/graphql
     links:
-    - api
+      - api
     depends_on:
-    - api
+      - api
 
   nginx: 
     image: nginx:latest
@@ -41,5 +41,5 @@ services:
       - 80:80
       - 443:443
     depends_on:
-    - api
-    - ui
+      - api
+      - ui
