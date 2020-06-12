@@ -5,7 +5,6 @@ const { AuthenticationError } = require('apollo-server');
 import dotenv from 'dotenv';
 dotenv.config();
 const JWT_SECRET = process.env.JWT_SECRET;
-const { serverStatus } = require('../status');
 
 // Returns a function, that, when invoked, will only be triggered at most once
 // during a given window of time. Normally, the throttled function will run
@@ -66,7 +65,15 @@ const Query = {
     // console.log('boop');
     return neo4jgraphql(_parent, _args, ctx, _info);
   },
-  serverStatus,
+
+  async serverStatus(_parent, _args, context, _info) {
+    return [
+      { name: 'frontend', code: 200, message: 'ok' },
+      { name: 'api', code: 200, message: 'ok' },
+      { name: 'node', code: 200, message: 'ok' },
+      { name: 'database', code: 200, message: 'ok' },
+    ];
+  },
 };
 
 module.exports = Query;
