@@ -27,9 +27,9 @@ module.exports = {
     JWT_SECRET: 'changeme',
   },
   env: {
-    url: process.env.VERCEL_URL
-      ? 'https://' + process.env.VERCEL_URL
-      : 'http://localhost',
+    url: process.env.WEB_URI
+      ? process.env.WEB_URI
+      : 'https://' + process.env.VERCEL_URL,
     endpoint,
     endpointWeb,
     deployUrl,

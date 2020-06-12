@@ -3,9 +3,9 @@ import jwt from 'jsonwebtoken';
 import dotenv from 'dotenv';
 dotenv.config();
 const JWT_SECRET = process.env.JWT_SECRET;
-const webUrl = process.env.VERCEL_URL
-  ? 'https://' + process.env.VERCEL_URL
-  : process.env.WEB_URI;
+const webUrl = process.env.WEB_URI
+  ? process.env.WEB_URI
+  : 'https://' + process.env.VERCEL_URL;
 import { getUserByToken } from '../../controllers/auth';
 
 async function processPayload(req, driver) {

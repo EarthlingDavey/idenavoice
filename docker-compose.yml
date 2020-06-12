@@ -10,6 +10,7 @@ services:
       - GRAPHQL_LISTEN_PORT=4001
       - GRAPHQL_URI=http://api:4001/graphql
       - JWT_SECRET=abc
+      - WEB_URI=http://localhost
     env_file:
       - ./api/.env
     volumes:
@@ -23,7 +24,7 @@ services:
       - '3000:3000'
     environment:
       - NEXT_TELEMETRY_DEBUG=1 # data will be printed but not sent to nextjs.org
-      - ROOT_URL=http://localhost
+      - WEB_URI=http://localhost
       - GRAPHQL_URI=http://api:4001/graphql
       - GRAPHQL_WEB_URI=http://localhost/graphql
     links:
@@ -39,3 +40,6 @@ services:
     ports:
       - 80:80
       - 443:443
+    depends_on:
+    - api
+    - ui
