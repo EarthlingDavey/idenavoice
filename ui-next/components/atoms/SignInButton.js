@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 const querystring = require('querystring');
+import Button from './Button';
 
 function SignInButton({ input }) {
   const router = useRouter();
@@ -21,7 +22,7 @@ function SignInButton({ input }) {
 
   const token = getSessionToken();
 
-  console.log(getSessionToken());
+  // console.log(getSessionToken());
 
   function getDnaUrl(token) {
     const siteUrl = process.env.url;
@@ -44,13 +45,12 @@ function SignInButton({ input }) {
   const dnaUrl = getDnaUrl(token);
 
   const handleClick = () => {
-    console.log('clicked');
     router.push('/signin');
   };
 
   return (
     <a href={dnaUrl} onClick={handleClick}>
-      Signin with idena
+      Sign-in
     </a>
   );
 }

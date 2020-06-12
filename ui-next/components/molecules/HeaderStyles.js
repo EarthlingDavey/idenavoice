@@ -2,11 +2,11 @@ import styled, { css } from 'styled-components';
 
 const HeaderStyles = styled.header`
   margin: 0 auto;
-  padding: 1em 10px;
+  padding: 0.1em 10px;
   top: 0;
   display: flex;
   flex-direction: row;
-  align-items: flex-end;
+  align-items: center;
   max-width: 1200px;
   width: 100%;
   background-color: #fff;
@@ -21,6 +21,11 @@ const HeaderStyles = styled.header`
     max-width: 640px;
     flex-wrap: wrap;
     margin: 0 auto;
+  }
+
+  .left {
+    display: flex;
+    align-items: flex-end;
   }
 
   h1 {
@@ -43,6 +48,27 @@ const HeaderStyles = styled.header`
     margin-left: 1em;
     line-height: 1;
   }
+
+  .right {
+    margin-left: auto;
+
+    a {
+      color: inherit;
+      text-decoration: none;
+      text-transform: uppercase;
+      font-weight: 900;
+      vertical-align: middle;
+    }
+
+    a.profile {
+      display: inline-block;
+      width: 50px;
+      min-width: 50px;
+      height: 50px;
+      margin-right: 8px;
+    }
+  }
+
   li {
     font-size: 0.8em;
     position: relative;

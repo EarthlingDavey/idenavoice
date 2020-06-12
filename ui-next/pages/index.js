@@ -9,18 +9,18 @@ import AskRow from '../components/organisms/AskRow';
 import AnswerRow from '../components/organisms/AnswerRow';
 import AboutRow from '../components/organisms/AboutRow';
 
-const ViewerQuery = gql`
-  query ViewerQuery {
-    viewer {
-      address
-    }
-  }
-`;
+// const ViewerQuery = gql`
+//   query ViewerQuery {
+//     viewer {
+//       address
+//     }
+//   }
+// `;
 
 const Index = () => {
-  const { data, loading } = useQuery(ViewerQuery);
+  // const { data, loading } = useQuery(ViewerQuery);
 
-  console.log(data);
+  // console.log(data);
 
   // if (
   //   loading === false &&
@@ -42,7 +42,6 @@ const Index = () => {
   return (
     <App>
       <AskRow></AskRow>
-      {data && data.viewer && <p>logged in</p>}
       <AnswerRow></AnswerRow>
       <AboutRow></AboutRow>
       {/* <Ask></Ask> */}

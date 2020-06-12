@@ -1,14 +1,17 @@
 import styled from 'styled-components';
 
 const ButtonStyles = styled.button`
+  padding: 0.1em;
   border: 7px solid #000000;
   color: inherit;
   display: inline-block;
   cursor: pointer;
+  text-decoration: none;
   span {
     font-weight: 900;
     font-size: 123px;
     display: inline-block;
+    vertical-align: middle;
     line-height: 0.8;
     line-height: 0.8;
     @media (max-width: 1000px) {
