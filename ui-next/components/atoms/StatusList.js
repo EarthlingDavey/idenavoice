@@ -49,14 +49,11 @@ export function StatusList(props) {
     pollInterval: 35000,
   });
 
-  const frontendText =
-    process.env.deployUrl === 'http://localhost'
-      ? 'running locally'
-      : 'deployed from GitHub';
-
-  // console.log(result);
-
   const data = result.data;
+
+  if (!data) {
+    return <p>Loading</p>;
+  }
 
   let services = [
     {
@@ -96,24 +93,9 @@ export function StatusList(props) {
   ];
 
   if (data && data.serverStatus) {
-    // services = [...services, ...data.serverStatus];
     const mergedArray = [...services, ...data.serverStatus];
 
-    console.log(mergedArray);
-
     services = mergeObjectsInUnique(mergedArray, 'name');
-
-    // // mergedArray have duplicates, lets remove the duplicates using Set
-    // let set = new Set();
-    // let unionArray = mergedArray.filter((item) => {
-    //   if (!set.has(item.name)) {
-    //     set.add(item.name);
-    //     return true;
-    //   }
-    //   return false;
-    // }, set);
-    // console.log(unionArray);
-    // services = unionArray;
   }
 
   return (
@@ -126,9 +108,6 @@ export function StatusList(props) {
           </li>
         );
       })}
-      {/* <li>API</li>
-            <li>Node</li>
-            <li>Database</li> */}
     </ul>
   );
 }

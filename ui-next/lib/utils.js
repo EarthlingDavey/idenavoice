@@ -1,5 +1,5 @@
 const throttle = (func, delay) => {
-  console.log('hi');
+  // console.log('hi');
   let inProgress = false;
   return (...args) => {
     if (inProgress) {
