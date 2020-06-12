@@ -1,6 +1,8 @@
 const fetch = require('node-fetch');
 const { getSyncedUpTo } = require('../controllers/transactions');
 
+let nodeRequestId = 0;
+
 /**
  * Helper function to fetch a  url
  */
@@ -13,6 +15,25 @@ const safeFetch = async (url, options) => {
     return false;
   }
 };
+
+async function getLastBlock(url, key) {
+  const body = {
+    method: 'bcn_lastBlock',
+    params: [],
+    id: nodeRequestId++,
+    key,
+  };
+  console.log(JSON.stringify(body));
+  const options = {
+    method: 'POST',
+    body: JSON.stringify(body),
+    headers: { 'Content-Type': 'application/json' },
+  };
+  const response = await safeFetch(url, options);
+  console.log(response);
+  const json = await response.json();
+  return json.result ? json.result : false;
+}
 
 function apiStatus() {
   let deployUrl = 'http://localhost';
@@ -58,7 +79,8 @@ async function dbStatus(driver) {
   session.close();
 
   if (block && block.value) {
-    db.message = `ok - synced to block ${block.value}`;
+    // db.message = `ok - synced to block ${block.value}`;
+    db.message = `ok - responded just now`;
   }
 
   return db;
@@ -91,18 +113,36 @@ async function backendStatus() {
   return backend;
 }
 
+async function nodeStatus() {
+  let node = {
+    name: 'node',
+    code: 200,
+    message: 'warning - cannot connect',
+  };
+
+  if (process.env.NODE_URI && process.env.NODE_KEY) {
+    const url = `${process.env.NODE_URI}`;
+    const key = `${process.env.NODE_KEY}`;
+    const block = await getLastBlock(url, key);
+    // console.log(block);
+    if (block.height) {
+      node.message = `ok - last block time:`;
+    }
+    if (block.timestamp) {
+      node.timestamp = block.timestamp.toString();
+    }
+  }
+
+  return node;
+}
+
 async function serverStatus(_parent, _args, ctx, _info) {
   const api = apiStatus();
   const db = dbStatus(ctx.driver);
   const backend = backendStatus();
+  const node = nodeStatus();
 
-  const a = [
-    api,
-    db,
-    backend,
-    // { name: 'node', code: 200, message: 'ok' },
-    // { name: 'database', code: 200, message: 'ok' },
-  ];
+  const a = [api, db, backend, node];
 
   // console.log(a);
 

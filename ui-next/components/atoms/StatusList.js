@@ -2,6 +2,10 @@ import React from 'react';
 import Link from 'next/link';
 import gql from 'graphql-tag';
 import { useQuery } from '@apollo/react-hooks';
+import TimeAgo from 'react-timeago';
+import englishStrings from 'react-timeago/lib/language-strings/en';
+import buildFormatter from 'react-timeago/lib/formatters/buildFormatter';
+const formatter = buildFormatter(englishStrings);
 
 const SERVER_STATUS_QUERY = gql`
   query serverStatus {
@@ -9,6 +13,7 @@ const SERVER_STATUS_QUERY = gql`
       code
       message
       name
+      timestamp
       links {
         text
         href
@@ -105,6 +110,12 @@ export function StatusList(props) {
           <li key={i}>
             {s.name}: {s.message}
             {s.links && <StatusListLinks links={s.links}></StatusListLinks>}
+            {s.timestamp && (
+              <>
+                {' '}
+                <TimeAgo date={s.timestamp * 1000} formatter={formatter} />{' '}
+              </>
+            )}
           </li>
         );
       })}

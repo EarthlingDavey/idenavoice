@@ -73,6 +73,7 @@ type Status {
   name: String
   code: Int
   message: String
+  timestamp: String
   links: [MyLink]
 }
 

@@ -2,7 +2,7 @@ import Link from 'next/link';
 const querystring = require('querystring');
 
 import TimeAgo from 'react-timeago';
-import frenchStrings from 'react-timeago/lib/language-strings/en';
+import englishStrings from 'react-timeago/lib/language-strings/en';
 import buildFormatter from 'react-timeago/lib/formatters/buildFormatter';
 import { notifyWallet } from '../../lib/wallet';
 
@@ -15,7 +15,7 @@ import { MonoStyles } from '../atoms/MonoStyles';
 import { InternalLinkStyles } from '../atoms/InternalLinkStyles';
 import Badges from '../atoms/Badges';
 
-const formatter = buildFormatter(frenchStrings);
+const formatter = buildFormatter(englishStrings);
 
 function button(question, answer, txHash) {
   const schemaForChooseAction = {
