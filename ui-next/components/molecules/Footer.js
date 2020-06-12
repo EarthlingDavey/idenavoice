@@ -25,7 +25,7 @@ export default () => {
       <div ref={ref} className="wrap">
         <div className="inner">
           <h2>Status</h2>
-          <StatusList></StatusList>
+          {/* <StatusList></StatusList> */}
           {/* <h2>Footer</h2>
           <ul>
             <li>
