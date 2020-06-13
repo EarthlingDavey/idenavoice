@@ -27,6 +27,27 @@ async function getUserByToken(session, token) {
   }
 }
 
+async function getUserByAddress(session, address) {
+  try {
+    // 300000ms is 5 mins
+    const result = await session.run(
+      `MATCH (user:User {address: $address})
+      RETURN user { .address } AS user`,
+      { address }
+    );
+
+    if (!result.records[0]) {
+      console.log('user not found ');
+      return false;
+    }
+    const singleRecord = result.records[0];
+    return singleRecord.get(0);
+  } catch (error) {
+    console.log(error);
+    return false;
+  }
+}
+
 async function createUser(session, user) {
   try {
     const result = await session.run(
@@ -48,5 +69,6 @@ async function createUser(session, user) {
 
 module.exports = {
   getUserByToken,
+  getUserByAddress,
   createUser,
 };

@@ -1,6 +1,7 @@
 type User {
   address: String!
   transactions: [Transaction] @relation(name: "USER_TX", direction: "IN")
+  tags: [Tag] @relation(name: "USER_TAG", direction: "IN")
   age: Int
   state: String
 }
@@ -77,6 +78,12 @@ type Status {
   links: [MyLink]
 }
 
+type Tag {
+  id: ID
+  name: String! # Name can change so we set an ID
+  user: User @relation(name: "USER_TAG", direction: "OUT")
+}
+
 type Query {
   viewer: User
   serverStatus: [Status]
@@ -87,5 +94,8 @@ type Query {
 }
 type Mutation {
   signOut: String
+  CreateTag(name: String!): Tag
+  DeleteTag(id: ID!): Tag
+  DeleteAllTags: [Tag] @cypher(statement: "MATCH (t:Tag) DETACH DELETE t")
   # askQuestion: Question!
 }

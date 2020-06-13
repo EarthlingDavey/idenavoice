@@ -14,7 +14,7 @@ export default class AboutRow extends React.Component {
         <TitleWrapper>
           <BigHeading align="center">ABOUT THIS</BigHeading>
         </TitleWrapper>
-        <ContentWrapper maxWidth="50%">
+        <ContentWrapper width="50%">
           <h3>Idena</h3>
           <p>
             Idena is a proof-of-person blockchain. All users take part in
@@ -46,7 +46,7 @@ export default class AboutRow extends React.Component {
           </div> */}
         </ContentWrapper>
 
-        <ContentWrapper maxWidth="50%">
+        <ContentWrapper width="50%">
           <h3>How to</h3>
           <p>
             You'll need the Official Idena wallet, and have at least Newbie

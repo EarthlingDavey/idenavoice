@@ -11,14 +11,22 @@ export default function UserProfile(props) {
         <dd>
           <MonoStyles>{props.user.address}</MonoStyles>
         </dd>
-        <dt>Age</dt>
-        <dd>
-          <MonoStyles>{props.user.age}</MonoStyles>
-        </dd>
-        <dt>State</dt>
-        <dd>
-          <MonoStyles>{props.user.state}</MonoStyles>
-        </dd>
+        {props.user.age && (
+          <>
+            <dt>Age</dt>
+            <dd>
+              <MonoStyles>{props.user.age}</MonoStyles>
+            </dd>
+          </>
+        )}
+        {props.user.state && (
+          <>
+            <dt>State</dt>
+            <dd>
+              <MonoStyles>{props.user.state}</MonoStyles>
+            </dd>
+          </>
+        )}
       </dl>
     </UserProfileStyles>
   );

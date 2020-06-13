@@ -16,7 +16,7 @@ const ContentWrapper = styled.div`
   margin-bottom: 1em;
   position: ${(props) => (props.hasQuestions ? 'relative' : null)};
 
-  max-width: ${(props) => (props.maxWidth ? props.maxWidth : `100%`)};
+  width: ${(props) => (props.width ? props.width : `100%`)};
 
   h1, h2, h3, p {
 

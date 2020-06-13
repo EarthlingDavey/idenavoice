@@ -11,6 +11,7 @@ services:
       - GRAPHQL_URI=http://api:4001/graphql
       - JWT_SECRET=abc
       - WEB_URI=http://localhost
+      - NODE_ENV=develop
     env_file:
       - ./api/.env
     volumes:
@@ -43,3 +44,8 @@ services:
     depends_on:
       - api
       - ui
+
+networks:
+  default:
+    external:
+      name: voice-server_default

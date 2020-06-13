@@ -35,7 +35,7 @@ const schema = makeAugmentedSchema({
   typeDefs,
   resolvers,
   config: {
-    mutation: false,
+    // mutation: false,
   },
   allowUndefinedInResolve: true,
 });
@@ -81,7 +81,11 @@ async function createServer() {
     },
     schema: schema,
     introspection: true,
-    playground: true,
+    playground: {
+      settings: {
+        'request.credentials': 'include',
+      },
+    },
     cors: cors(corsOptions),
   });
   return server;

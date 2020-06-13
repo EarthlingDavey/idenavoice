@@ -5,6 +5,7 @@ const HeaderStyles = styled.header`
   padding: 0.1em 10px;
   top: 0;
   display: flex;
+  min-height: 3em;
   flex-direction: row;
   align-items: center;
   max-width: 1200px;
@@ -26,6 +27,9 @@ const HeaderStyles = styled.header`
   .left {
     display: flex;
     align-items: flex-end;
+    @media (max-width: 640px) {
+      flex-wrap: wrap;
+    }
   }
 
   h1 {

@@ -16,8 +16,6 @@ const VIEWER_QUERY = gql`
   }
 `;
 
-const { toUtf8, fromUtf8 } = require('ethereumjs-util');
-
 export default function Header(props) {
   const { client, loading, data } = useQuery(VIEWER_QUERY, {
     fetchPolicy: 'network-only',
@@ -27,7 +25,6 @@ export default function Header(props) {
 
   return (
     <HeaderStyles ButtonStyles={ButtonStyles}>
-      {/* <Logo></Logo> */}
       <div className="left">
         <h1>
           <Link href="/">
@@ -61,7 +58,7 @@ export default function Header(props) {
             <a href="/me" className="profile">
               <RoboImg address={data.viewer.address}></RoboImg>
             </a>
-            <a href="/signout">Sign out</a>
+            <a href="/signout">Sign out?</a>
           </>
         )}
       </div>

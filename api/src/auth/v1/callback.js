@@ -61,6 +61,6 @@ export default async (req, res, driver) => {
       })
     );
 
-    res.redirect(301, webUrl);
+    res.redirect(301, webUrl + '/me');
   }
 };
