@@ -35,7 +35,7 @@ async function getLastBlock(url, key) {
   return json.result ? json.result : false;
 }
 
-function apiStatus() {
+async function apiStatus() {
   let deployUrl = 'http://localhost';
   if (
     process.env.VERCEL_GITHUB_ORG &&
@@ -137,16 +137,32 @@ async function nodeStatus() {
 }
 
 async function serverStatus(_parent, _args, ctx, _info) {
-  const api = apiStatus();
-  const db = dbStatus(ctx.driver);
-  const backend = backendStatus();
-  const node = nodeStatus();
+  let statuses = [];
 
-  const a = [api, db, backend, node];
+  const apiPromise = apiStatus();
+  const dbPromise = dbStatus(ctx.driver);
+  const backendPromise = backendStatus();
+  const nodePromise = nodeStatus();
 
-  // console.log(a);
+  const api = await apiPromise;
+  const backend = await backendPromise;
+  const node = await nodePromise;
+  const db = await dbPromise;
 
-  return a;
+  if (api) {
+    statuses.push(api);
+  }
+  if (db) {
+    statuses.push(db);
+  }
+  if (backend) {
+    statuses.push(backend);
+  }
+  if (node) {
+    statuses.push(node);
+  }
+
+  return statuses;
 }
 
 module.exports = {
