@@ -13,8 +13,16 @@ const GET_TAGS = gql`
       name
       actions(filter: $filter) {
         name
-        quantity
+        qty
       }
+    }
+  }
+`;
+const CREATE_MY_TAG_UPVOTES = gql`
+  mutation CREATE_MY_TAG_UPVOTES($actions: [tagActionInput!]!) {
+    CreateMyTagUpVotes(actions: $actions) {
+      name
+      qty
     }
   }
 `;
@@ -29,7 +37,7 @@ function getInitTags(tags) {
       t: 1,
       id: t.id,
       name: t.name,
-      qty: t.actions.quantity ? t.actions.quantity : 0,
+      qty: t.actions[0] && t.actions[0].qty ? t.actions[0].qty : parseInt(0),
     });
   }
 
@@ -55,7 +63,7 @@ export default function TagVoting(props) {
     variables,
     // pollInterval: 3500,
   });
-  // const [DeleteTag, { data2 }] = useMutation(DELETE_TAG);
+  const [CreateMyTagUpVotes, { data2 }] = useMutation(CREATE_MY_TAG_UPVOTES);
 
   const data = result.data;
 
@@ -68,9 +76,30 @@ export default function TagVoting(props) {
   const tagsWithCount = getInitTags(data.Tag);
 
   function votingMutation(tags) {
-    console.log('in votingMutation');
-    console.log({ tags });
-    console.log('spare:' + spareCredits(tags));
+    // console.log('in votingMutation');
+    // console.log({ tags });
+    // console.log('spare:' + spareCredits(tags));
+
+    let actions = [];
+
+    for (let i = 0; i < tags.length; i++) {
+      const t = tags[i];
+      if (t.qty <= 0) {
+        continue;
+      }
+      // console.log(t);
+      actions.push({
+        tagId: t.id,
+        name: 'upvote',
+        qty: parseInt(t.qty),
+      });
+    }
+    // console.log({ actions });
+
+    CreateMyTagUpVotes({
+      variables: { actions },
+      // refetchQueries: ['GET_TAGS'],
+    });
   }
 
   return (

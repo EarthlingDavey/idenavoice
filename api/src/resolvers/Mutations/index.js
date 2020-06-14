@@ -7,6 +7,7 @@ import { neo4jgraphql, cypherQuery, cypherMutation } from 'neo4j-graphql-js';
 // import { getUserByAddress } from '../controllers/auth';
 const { CreateTag } = require('./CreateTag');
 const { CreateAction } = require('./CreateAction');
+const { CreateMyTagUpVotes } = require('./CreateMyTagUpVotes');
 const { signOut } = require('./signOut');
 
 // dotenv.config();
@@ -16,6 +17,7 @@ const Mutation = {
   signOut,
   CreateTag,
   CreateAction,
+  CreateMyTagUpVotes,
   async DeleteAllTags(object, params, ctx, resolveInfo) {
     // console.log(process.env);
     if ('develop' === process.env.NODE_ENV) {

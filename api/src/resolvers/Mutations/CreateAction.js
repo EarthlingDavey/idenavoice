@@ -39,9 +39,9 @@ async function CreateAction(_parent, args, ctx, _info) {
       // this should be update quantity
       let dbAction = await getTagAction(
         session,
-        args.tagId,
+        args.data.tagId,
         address,
-        args.name
+        args.data.name
       );
 
       console.log(dbAction);
@@ -49,10 +49,10 @@ async function CreateAction(_parent, args, ctx, _info) {
       if (!dbAction) {
         dbAction = await creatUpdateTagAction(
           session,
-          args.tagId,
+          args.data.tagId,
           address,
-          args.name,
-          args.quantity ? args.quantity : 1
+          args.data.name,
+          args.data.qty ? args.data.qty : 1
         );
       }
 

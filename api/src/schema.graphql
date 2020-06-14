@@ -87,7 +87,7 @@ enum ActionName {
 type Action {
   name: ActionName!
   user: User! @relation(name: "USER_ACTION", direction: "OUT")
-  quantity: Int
+  qty: Int
   tag: Tag @relation(name: "ACTION_ON_TAG", direction: "OUT")
   timestamp: DateTime
 }
@@ -107,13 +107,21 @@ type Query {
   #     statement: "MATCH (u:User) WHERE u.name CONTAINS $substring RETURN u"
   #   )
 }
+
+input tagActionInput {
+  name: ActionName!
+  tagId: ID
+  qty: Int
+}
+
 type Mutation {
   signOut: String
   CreateTag(name: String!): Tag
   DeleteTag(id: ID!): Tag
   DeleteAllTags: [Tag] @cypher(statement: "MATCH (t:Tag) DETACH DELETE t")
-  CreateAction(name: ActionName!, quantity: Int, tagId: ID): Action
+  CreateAction(data: tagActionInput): Action
   DeleteAllActions: [Action]
     @cypher(statement: "MATCH (a:Action) DETACH DELETE a")
+  CreateMyTagUpVotes(actions: [tagActionInput!]!): [Action]
   # askQuestion: Question!
 }
