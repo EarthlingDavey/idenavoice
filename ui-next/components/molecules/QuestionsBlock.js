@@ -26,6 +26,7 @@ export function QuestionsBlock(props) {
           <Question
             key={question.transaction.hash}
             question={question}
+            allTags={data.Tag}
           ></Question>
         );
       })}

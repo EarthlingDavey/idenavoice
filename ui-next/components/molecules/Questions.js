@@ -5,6 +5,7 @@ import QuestionsBlock from './QuestionsBlock';
 const QUESTIONS_QUERY = gql`
   query QuestionsQuery {
     Question(orderBy: timestamp_desc, first: 8) {
+      id
       name
       timestamp {
         formatted
@@ -21,6 +22,14 @@ const QUESTIONS_QUERY = gql`
           state
         }
       }
+      tags {
+        id
+        name
+      }
+    }
+    Tag {
+      id
+      name
     }
   }
 `;

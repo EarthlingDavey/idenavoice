@@ -19,6 +19,7 @@ type Question {
   name: String!
   hash: String!
   answers: [Answer] @relation(name: "ANSWER_FOR", direction: "OUT")
+  tags: [Tag] @relation(name: "TAG_FOR_QUESTION", direction: "OUT")
   timestamp: DateTime
   transaction: Transaction @relation(name: "QUESTION_IN", direction: "IN")
   allAnswersTransactions: [Transaction]
@@ -97,6 +98,7 @@ type Tag {
   name: String! # Name can change so we set an ID
   user: User @relation(name: "USER_TAG", direction: "OUT")
   actions: [Action] @relation(name: "ACTION_ON_TAG", direction: "IN")
+  questions: [Question] @relation(name: "TAG_FOR_QUESTION", direction: "IN")
 }
 
 type Query {
@@ -123,5 +125,9 @@ type Mutation {
   DeleteAllActions: [Action]
     @cypher(statement: "MATCH (a:Action) DETACH DELETE a")
   CreateMyTagUpVotes(actions: [tagActionInput!]!): [Action]
+  # MergeQuestionTags(
+  #   from: _QuestionInput!
+  #   to: _TagInput!
+  # ): _MergeQuestionTagsPayload
   # askQuestion: Question!
 }

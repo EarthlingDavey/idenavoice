@@ -1,11 +1,14 @@
 import Link from 'next/link';
 const querystring = require('querystring');
+import { useQuery, useMutation } from '@apollo/react-hooks';
+import gql from 'graphql-tag';
 
 import TimeAgo from 'react-timeago';
 import englishStrings from 'react-timeago/lib/language-strings/en';
 import buildFormatter from 'react-timeago/lib/formatters/buildFormatter';
 import { notifyWallet } from '../../lib/wallet';
 
+import QuestionTags from './QuestionTags';
 import { QuestionStyles } from './QuestionStyles';
 import { TxListItemStyles } from './TxListItemStyles';
 import Button from '../atoms/Button';
@@ -16,6 +19,19 @@ import { InternalLinkStyles } from '../atoms/InternalLinkStyles';
 import Badges from '../atoms/Badges';
 
 const formatter = buildFormatter(englishStrings);
+
+const ADD_QUESTION_TAGS = gql`
+  mutation MergeQuestionTags($questionId: ID!, $tagId: ID!) {
+    MergeQuestionTags(from: { id: $questionId }, to: { id: $tagId }) {
+      from {
+        name
+      }
+      to {
+        name
+      }
+    }
+  }
+`;
 
 function button(question, answer, txHash) {
   const schemaForChooseAction = {
@@ -79,6 +95,32 @@ export default function Question(props) {
   const transaction = props.transaction || props.question.transaction;
   const user = transaction.user || props.user || props.question.user;
   const question = props.question;
+
+  const [MergeQuestionTags, { data }] = useMutation(ADD_QUESTION_TAGS);
+
+  async function handleTagChange(tags) {
+    console.log(question.id);
+    console.log({ tags });
+    for (let i = 0; i < tags.length; i++) {
+      const t = tags[i];
+      console.log(t);
+      MergeQuestionTags({
+        variables: {
+          questionId: question.id,
+          tagId: t.value,
+        },
+        // refetchQueries: ['GET_TAGS'],
+      });
+    }
+    // const response = await AddQuestionTags({
+    //   variables: {
+    //     questionId: '067b74f0-d75f-48ee-83fa-a525bba80c77',
+    //     tagId: '54726691-8328-430c-9529-4f7ab9e6366c',
+    //   },
+    //   // refetchQueries: ['GET_TAGS'],
+    // });
+  }
+
   return (
     <QuestionStyles
       ButtonGroupStyles={ButtonGroupStyles}
@@ -109,6 +151,12 @@ export default function Question(props) {
           <MonoStyles> {transaction.hash}</MonoStyles>
         </div>
       </div>
+      <QuestionTags
+        allTags={props.allTags}
+        questionTags={props.question.tags}
+        question={question}
+        handleTagChange={handleTagChange}
+      ></QuestionTags>
       <Respond question={question} transaction={transaction}></Respond>
     </QuestionStyles>
   );

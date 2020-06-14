@@ -1,3 +1,4 @@
+import { toast } from 'react-toastify';
 import { TagVotingStyles } from './TagStyles';
 import TagVotingInner from './TagVotingInner';
 
@@ -5,6 +6,8 @@ import { useQuery, useMutation } from '@apollo/react-hooks';
 import gql from 'graphql-tag';
 
 import { spareCredits } from '../../lib/utils';
+
+let toasts = {};
 
 const GET_TAGS = gql`
   query GET_TAGS($filter: _ActionFilter) {
@@ -75,7 +78,7 @@ export default function TagVoting(props) {
 
   const tagsWithCount = getInitTags(data.Tag);
 
-  function votingMutation(tags) {
+  async function votingMutation(tags) {
     // console.log('in votingMutation');
     // console.log({ tags });
     // console.log('spare:' + spareCredits(tags));
@@ -96,10 +99,21 @@ export default function TagVoting(props) {
     }
     // console.log({ actions });
 
-    CreateMyTagUpVotes({
+    const response = await CreateMyTagUpVotes({
       variables: { actions },
       // refetchQueries: ['GET_TAGS'],
     });
+    if (response.data) {
+      if (toast.isActive(toasts.updated)) {
+        toast.dismiss(toasts.updated);
+        setTimeout(function () {
+          toasts.updated = toast('Your votes have been re-updated.');
+        }, 1000);
+      } else {
+        toasts.updated = toast('Your votes have been updated.');
+      }
+    }
+    // console.log({ response });
   }
 
   return (

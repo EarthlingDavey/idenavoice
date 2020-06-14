@@ -18,6 +18,10 @@ const Mutation = {
   CreateTag,
   CreateAction,
   CreateMyTagUpVotes,
+  async MergeQuestionTags(object, args, ctx, resolveInfo) {
+    // do a check for user here
+    return neo4jgraphql(object, args, ctx, resolveInfo);
+  },
   async DeleteAllTags(object, params, ctx, resolveInfo) {
     // console.log(process.env);
     if ('develop' === process.env.NODE_ENV) {

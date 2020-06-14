@@ -1,8 +1,10 @@
 import React from 'react';
 import { toast } from 'react-toastify';
-
-import { TagVotingStyles } from './TagStyles';
 import { spareCredits } from '../../lib/utils';
+
+import Button from '../atoms/Button';
+import { ButtonStyles, ButtonGroupStyles } from '../atoms/ButtonStyles';
+import { TagVotingStyles } from './TagStyles';
 
 let toasts = {};
 
@@ -54,7 +56,7 @@ class TagVotingInner extends React.Component {
     let spareVoteCredits = spareCredits(this.state.tags);
 
     return (
-      <TagVotingStyles>
+      <TagVotingStyles ButtonStyles={ButtonStyles}>
         <p>Spare credits: {spareVoteCredits}</p>
         <ul>
           {this.state.tags.map((t, i) => {
@@ -77,9 +79,9 @@ class TagVotingInner extends React.Component {
             );
           })}
         </ul>
-        <button onClick={() => this.props.votingMutation(this.state.tags)}>
-          Submit
-        </button>
+        <Button onClick={() => this.props.votingMutation(this.state.tags)}>
+          <span>Submit</span>
+        </Button>
       </TagVotingStyles>
     );
   }
