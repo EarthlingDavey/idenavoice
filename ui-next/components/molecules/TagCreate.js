@@ -22,7 +22,7 @@ export default function TagCreate(props) {
       <form
         onSubmit={(e) => {
           e.preventDefault();
-          console.log(textarea);
+          // console.log(textarea);
           CreateTag({
             variables: { name: textarea.value },
             refetchQueries: ['GET_TAGS'],

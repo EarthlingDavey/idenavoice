@@ -14,7 +14,7 @@ function DontReadTheComments() {
     variables: {},
   });
 
-  console.log(data);
+  // console.log(data);
 
   // return <h4>a</h4>;
   return <h4>New count: {!loading && data.counter.count}</h4>;

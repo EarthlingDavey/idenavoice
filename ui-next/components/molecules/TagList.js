@@ -45,7 +45,7 @@ export default function TagList(props) {
 
   const data = result.data;
 
-  console.log(data);
+  // console.log(data);
 
   if (!data) {
     return <p>Loading</p>;

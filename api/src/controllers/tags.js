@@ -2,7 +2,8 @@ async function createTagWithUser(session, tag, address) {
   try {
     const result = await session.run(
       `
-      CREATE (tag:Tag { name: $tagName, id : apoc.create.uuid() })-[r:USER_TAG]->(user:User {address: $address})
+      MATCH (user:User {address: $address})
+      CREATE (tag:Tag { name: $tagName, id : apoc.create.uuid() })-[r:USER_TAG]->(user)
       RETURN tag { .name, .id } AS tag`,
       { tagName: tag.name, address }
     );

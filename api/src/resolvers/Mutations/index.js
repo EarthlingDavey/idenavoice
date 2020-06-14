@@ -6,6 +6,7 @@ import { neo4jgraphql, cypherQuery, cypherMutation } from 'neo4j-graphql-js';
 // import { createQuestionUserRelationship } from '../controllers/question';
 // import { getUserByAddress } from '../controllers/auth';
 const { CreateTag } = require('./CreateTag');
+const { CreateAction } = require('./CreateAction');
 const { signOut } = require('./signOut');
 
 // dotenv.config();
@@ -14,8 +15,19 @@ const { signOut } = require('./signOut');
 const Mutation = {
   signOut,
   CreateTag,
+  CreateAction,
   async DeleteAllTags(object, params, ctx, resolveInfo) {
-    console.log(process.env);
+    // console.log(process.env);
+    if ('develop' === process.env.NODE_ENV) {
+      return neo4jgraphql(object, params, ctx, resolveInfo);
+    }
+    throw new AuthenticationError(
+      'Authentication token is invalid, please log in '
+    );
+    return false;
+  },
+  async DeleteAllActions(object, params, ctx, resolveInfo) {
+    // console.log(process.env);
     if ('develop' === process.env.NODE_ENV) {
       return neo4jgraphql(object, params, ctx, resolveInfo);
     }

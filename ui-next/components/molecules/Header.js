@@ -21,7 +21,7 @@ export default function Header(props) {
     fetchPolicy: 'network-only',
   });
 
-  console.log(data);
+  // console.log(data);
 
   return (
     <HeaderStyles ButtonStyles={ButtonStyles}>

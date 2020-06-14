@@ -1,3 +1,5 @@
+import cookie from 'cookie';
+
 async function signOut(parent, args, ctx, info) {
   ctx.res.setHeader(
     'Set-Cookie',

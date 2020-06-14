@@ -12,7 +12,7 @@ export default function TagsRow(props) {
       <h3>Tag creation </h3>
       <TagCreate></TagCreate>
       <h3>Tag voting</h3>
-      <TagVoting></TagVoting>
+      <TagVoting userAddress={props.userAddress}></TagVoting>
     </div>
   );
 }

@@ -6,8 +6,8 @@ const TagCreateStyles = styled.div`
 `;
 
 const TagVotingStyles = styled.div`
-  display: flex;
-  align-items: center;
+  /* display: flex; */
+  /* align-items: center; */
 `;
 
 module.exports = { TagCreateStyles, TagVotingStyles };

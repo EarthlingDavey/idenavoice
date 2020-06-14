@@ -4,6 +4,7 @@ type User {
   tags: [Tag] @relation(name: "USER_TAG", direction: "IN")
   age: Int
   state: String
+  actions: [Action] @relation(name: "USER_ACTION", direction: "IN")
 }
 
 enum State {
@@ -78,10 +79,24 @@ type Status {
   links: [MyLink]
 }
 
+enum ActionName {
+  upvote
+  downvote
+}
+
+type Action {
+  name: ActionName!
+  user: User! @relation(name: "USER_ACTION", direction: "OUT")
+  quantity: Int
+  tag: Tag @relation(name: "ACTION_ON_TAG", direction: "OUT")
+  timestamp: DateTime
+}
+
 type Tag {
   id: ID
   name: String! # Name can change so we set an ID
   user: User @relation(name: "USER_TAG", direction: "OUT")
+  actions: [Action] @relation(name: "ACTION_ON_TAG", direction: "IN")
 }
 
 type Query {
@@ -97,5 +112,8 @@ type Mutation {
   CreateTag(name: String!): Tag
   DeleteTag(id: ID!): Tag
   DeleteAllTags: [Tag] @cypher(statement: "MATCH (t:Tag) DETACH DELETE t")
+  CreateAction(name: ActionName!, quantity: Int, tagId: ID): Action
+  DeleteAllActions: [Action]
+    @cypher(statement: "MATCH (a:Action) DETACH DELETE a")
   # askQuestion: Question!
 }
