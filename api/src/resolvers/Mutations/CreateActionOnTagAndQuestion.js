@@ -13,6 +13,7 @@ import {
   getTagAction,
   creatUpdateTagAction,
   mergeActionOnTagAndQuestion,
+  removeActionOnTagAndQuestion,
 } from '../../controllers/actions';
 
 dotenv.config();
@@ -51,6 +52,14 @@ async function CreateActionOnTagAndQuestion(_parent, args, ctx, _info) {
       }
 
       // console.log(dbTagAndQuestion);
+
+      await removeActionOnTagAndQuestion(
+        session,
+        args.name,
+        args.tagId,
+        args.questionId,
+        address
+      );
 
       const dbUserAction = await mergeActionOnTagAndQuestion(
         session,

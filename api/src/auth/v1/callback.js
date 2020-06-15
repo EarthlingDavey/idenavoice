@@ -36,7 +36,7 @@ export default async (req, res, driver) => {
     let session = driver.session();
     const dbUser = await getUserByToken(session, req.params.token);
     session.close();
-    console.log({ dbUser });
+    // console.log({ dbUser });
 
     if (!dbUser) {
       res.redirect(301, webUrl + '/signup');

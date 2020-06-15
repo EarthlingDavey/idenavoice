@@ -53,6 +53,7 @@ async function mergeActionOnTagAndQuestion(
   try {
     const result = await session.run(
       `
+
       MATCH 
         (t:Tag {id: $tagId})<-[r:TAG_FOR_QUESTION]-(q:Question {id: $questionId}),
         (u:User {address: $address})
@@ -71,6 +72,37 @@ async function mergeActionOnTagAndQuestion(
       DELETE t
 
       RETURN a { .name, .qty } AS a`,
+      { tagId: tagId, questionId, address, name, qty: 1 }
+    );
+
+    const singleRecord = result.records[0];
+    if (!singleRecord) {
+      return false;
+    }
+    return singleRecord.get(0);
+  } catch (error) {
+    console.log(error);
+    return false;
+  }
+}
+async function removeActionOnTagAndQuestion(
+  session,
+  name,
+  tagId,
+  questionId,
+  address
+) {
+  // console.log({ tagId, address, name, qty });
+  try {
+    const result = await session.run(
+      `
+      MATCH 
+        (t:Tag {id: $tagId})<-[r:TAG_FOR_QUESTION]-(q:Question {id: $questionId}),
+        (u:User {address: $address})<-[rTemp:USER_ACTION]-(a:Action)-[r4:ACTION_ON_QUESTION]->(q)
+      MATCH (t)<-[r2:ACTION_ON_TAG]-
+        (a)-[r3:USER_ACTION]->(u)
+      DETACH DELETE a
+      `,
       { tagId: tagId, questionId, address, name, qty: 1 }
     );
 
@@ -136,6 +168,7 @@ module.exports = {
   getTagAction,
   creatUpdateTagAction,
   mergeActionOnTagAndQuestion,
+  removeActionOnTagAndQuestion,
   removeTagActions,
   batchCreateTagActions,
 };

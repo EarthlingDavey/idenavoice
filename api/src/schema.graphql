@@ -101,6 +101,22 @@ type Tag {
   user: User @relation(name: "USER_TAG", direction: "OUT")
   actions: [Action] @relation(name: "ACTION_ON_TAG", direction: "IN")
   questions: [Question] @relation(name: "TAG_FOR_QUESTION", direction: "IN")
+  countActionsWithQuestionUp(questionId: ID!): Int
+    @cypher(
+      statement: """
+      MATCH (this)<-[r2:ACTION_ON_TAG]-(a:Action)-[r:ACTION_ON_QUESTION]->(q:Question )
+      WHERE ( a.name = 'upvote' ) AND (q.id = $questionId)
+      RETURN COUNT(a)
+      """
+    )
+  countActionsWithQuestionDown(questionId: ID!): Int
+    @cypher(
+      statement: """
+      MATCH (this)<-[r2:ACTION_ON_TAG]-(a:Action)-[r:ACTION_ON_QUESTION]->(q:Question )
+      WHERE ( a.name = 'downvote' ) AND (q.id = $questionId)
+      RETURN COUNT(a)
+      """
+    )
 }
 
 type Query {

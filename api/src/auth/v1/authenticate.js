@@ -28,7 +28,7 @@ async function processPayload(req, driver) {
   let session = driver.session();
   const dbUser = await getUserByToken(session, req.body.token);
   session.close();
-  console.log({ dbUser });
+  // console.log({ dbUser });
 
   const nonce = dbUser.nonce;
   const signature = req.body.signature;

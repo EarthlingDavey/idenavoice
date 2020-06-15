@@ -80,7 +80,7 @@ const runServer = async () => {
 
   httpServer.listen(port, () => {
     console.log(`🚀 Server ready at http://localhost:${port}${path}`);
-    console.log(`🚀 Subscriptions ready at ws://localhost:${port}${path}`);
+    // console.log(`🚀 Subscriptions ready at ws://localhost:${port}${path}`);
   });
 };
 

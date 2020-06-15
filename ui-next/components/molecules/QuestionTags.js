@@ -88,8 +88,8 @@ export default class CreatableMulti extends Component {
   };
 
   toggleTag = (e, id) => {
-    console.log(e);
-    console.log(id);
+    // console.log(e);
+    // console.log(id);
     e.preventDefault();
     if (this.state.explodeTag === id) {
       this.setState({ explodeTag: '' });
