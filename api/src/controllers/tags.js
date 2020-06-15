@@ -16,6 +16,26 @@ async function createTagWithUser(session, tag, address) {
   }
 }
 
+async function tagAndQuestionExists(session, tagId, questionId) {
+  try {
+    const result = await session.run(
+      `
+      MATCH (tag:Tag {id: $tagId})<-[r:TAG_FOR_QUESTION]-(question:Question {id: $questionId})
+      RETURN tag { .name, .id } AS tag`,
+      { tagId, questionId }
+    );
+
+    if (!result.records[0]) {
+      return false;
+    } else {
+      return true;
+    }
+  } catch (error) {
+    console.log(error);
+    return false;
+  }
+}
+
 async function getTagByName(session, tagName) {
   try {
     const result = await session.run(
@@ -57,6 +77,7 @@ async function getTagByIdAndUser(session, tagId, address) {
 
 module.exports = {
   getTagByName,
+  tagAndQuestionExists,
   getTagByIdAndUser,
   createTagWithUser,
 };

@@ -114,7 +114,9 @@ export default class CreatableMulti extends Component {
                 as="a"
                 onClick={(e) => this.toggleTag(e, t.id)}
                 key={t.id}
+                id={t.id}
                 name={t.name}
+                questionId={this.props.question.id}
                 signedIn={this.props.signedIn}
               ></Tag>
             );

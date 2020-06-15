@@ -1,7 +1,47 @@
+import { useMutation } from '@apollo/react-hooks';
+import gql from 'graphql-tag';
+
 import { TagStyles } from './TagStyles';
 
+const CREATE_ACTION = gql`
+  mutation CreateActionOnTagAndQuestion(
+    $questionId: ID!
+    $tagId: ID!
+    $name: ActionName!
+  ) {
+    CreateActionOnTagAndQuestion(
+      tagId: $tagId
+      questionId: $questionId
+      name: $name
+    ) {
+      name
+      qty
+      tag {
+        name
+      }
+      question {
+        name
+      }
+    }
+  }
+`;
+
 export default function Tag(props) {
-  // const [ActionOnTag, { data }] = useMutation(ADD_QUESTION_TAGS);
+  const [CreateActionOnTagAndQuestion, { data }] = useMutation(CREATE_ACTION);
+
+  async function handleAction(e, tagId, questionId, name) {
+    e.preventDefault();
+    console.log(questionId, tagId, name);
+    // return false;
+    CreateActionOnTagAndQuestion({
+      variables: {
+        questionId,
+        tagId,
+        name,
+      },
+      // refetchQueries: ['GET_TAGS'],
+    });
+  }
 
   return (
     <TagStyles>
@@ -14,9 +54,23 @@ export default function Tag(props) {
           {props.signedIn && (
             <>
               <br />
-              <a href="">tag is relevant 🔼</a>
+              <a
+                href=""
+                onClick={(e) =>
+                  handleAction(e, props.id, props.questionId, 'upvote')
+                }
+              >
+                tag is relevant 🔼
+              </a>
               <br></br>
-              <a href="">tag is not relevant 🔽</a>
+              <a
+                href=""
+                onClick={(e) =>
+                  handleAction(e, props.id, props.questionId, 'downvote')
+                }
+              >
+                tag is not relevant 🔽
+              </a>
             </>
           )}
           {!props.signedIn && (

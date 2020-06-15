@@ -42,6 +42,49 @@ async function creatUpdateTagAction(session, tagId, address, name, qty) {
   }
 }
 
+async function mergeActionOnTagAndQuestion(
+  session,
+  name,
+  tagId,
+  questionId,
+  address
+) {
+  // console.log({ tagId, address, name, qty });
+  try {
+    const result = await session.run(
+      `
+      MATCH 
+        (t:Tag {id: $tagId})<-[r:TAG_FOR_QUESTION]-(q:Question {id: $questionId}),
+        (u:User {address: $address})
+      MERGE 
+        (t)<-[r2:ACTION_ON_TAG]-
+        (a:Action)-[r3:USER_ACTION]->
+        (u)<-[rTemp:USER_ACTION]-(a)-[r4:ACTION_ON_QUESTION]->(q)
+      ON CREATE SET a.name = $name, a.qty= $qty
+      ON MATCH SET a.name = $name, a.qty= $qty
+      WITH a, u
+
+      MATCH (a)-[rel:USER_ACTION]->(u)
+      WITH a, collect(rel) AS rels
+      WHERE size(rels) > 1
+      UNWIND tail(rels) as t
+      DELETE t
+
+      RETURN a { .name, .qty } AS a`,
+      { tagId: tagId, questionId, address, name, qty: 1 }
+    );
+
+    const singleRecord = result.records[0];
+    if (!singleRecord) {
+      return false;
+    }
+    return singleRecord.get(0);
+  } catch (error) {
+    console.log(error);
+    return false;
+  }
+}
+
 async function removeTagActions(session, address) {
   try {
     const result = await session.run(
@@ -92,6 +135,7 @@ async function batchCreateTagActions(session, address, actions) {
 module.exports = {
   getTagAction,
   creatUpdateTagAction,
+  mergeActionOnTagAndQuestion,
   removeTagActions,
   batchCreateTagActions,
 };

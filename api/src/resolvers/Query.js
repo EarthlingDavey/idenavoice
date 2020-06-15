@@ -46,7 +46,7 @@ function throttle(func, wait, options) {
 
 const Query = {
   async viewer(_parent, _args, context, _info) {
-    console.log('viewer');
+    // console.log('viewer');
     // console.log(context.req.cookies);
     const token =
       context.cookies && context.cookies.token ? context.cookies.token : null;

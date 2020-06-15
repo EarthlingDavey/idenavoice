@@ -7,6 +7,9 @@ import { neo4jgraphql, cypherQuery, cypherMutation } from 'neo4j-graphql-js';
 // import { getUserByAddress } from '../controllers/auth';
 const { CreateTag } = require('./CreateTag');
 const { CreateAction } = require('./CreateAction');
+const {
+  CreateActionOnTagAndQuestion,
+} = require('./CreateActionOnTagAndQuestion');
 const { CreateMyTagUpVotes } = require('./CreateMyTagUpVotes');
 const { signOut } = require('./signOut');
 
@@ -17,6 +20,7 @@ const Mutation = {
   signOut,
   CreateTag,
   CreateAction,
+  CreateActionOnTagAndQuestion,
   CreateMyTagUpVotes,
   async MergeQuestionTags(object, args, ctx, resolveInfo) {
     // do a check for user here
