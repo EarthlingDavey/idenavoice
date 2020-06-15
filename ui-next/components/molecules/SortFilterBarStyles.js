@@ -10,6 +10,8 @@ const SortFilterBarStyles = styled.nav`
   }
 
   h3 {
+    margin-top: 0.2em;
+    margin-bottom: 0.2em;
     margin-right: auto;
     text-transform: uppercase;
     font-weight: 900;

@@ -37,7 +37,7 @@ const GET_TAG_DETAILS = gql`
 `;
 
 function TagPopup(props) {
-  console.log(props.id);
+  // console.log(props.id);
 
   const { ...result } = useQuery(GET_TAG_DETAILS, {
     variables: { tagId: props.id, questionId: props.questionId },
@@ -49,7 +49,7 @@ function TagPopup(props) {
       ? result.data.Tag[0]
       : { countActionsWithQuestionUp: 0, countActionsWithQuestionDown: 0 };
 
-  console.log(details);
+  // console.log(details);
 
   const [CreateActionOnTagAndQuestion, { data }] = useMutation(CREATE_ACTION);
 
@@ -109,7 +109,7 @@ function TagPopup(props) {
 
 export default function Tag(props) {
   return (
-    <TagStyles>
+    <TagStyles as={props.as} selected={props.selected}>
       <a className="label" onClick={props.onClick}>
         #{props.name}
       </a>

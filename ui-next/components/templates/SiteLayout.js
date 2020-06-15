@@ -13,7 +13,7 @@ const MainStyles = styled.main`
   background-color: #fff;
   border-bottom: 7px solid #000;
   box-shadow: 25px 25px 0px 0px #ddd;
-  min-height: 50vh;
+  min-height: 75vh;
 `;
 
 const Layout = (props) => (

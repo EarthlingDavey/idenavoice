@@ -43,7 +43,7 @@ const MyClearIndicator = ({ children, innerProps, data }) => {
 
 export default class CreatableMulti extends Component {
   prepOptions = (options, questionTags) => {
-    console.log({ questionTags });
+    // console.log({ questionTags });
     let newOptions = [];
     for (let i = 0; i < options.length; i++) {
       const o = options[i];
@@ -100,7 +100,7 @@ export default class CreatableMulti extends Component {
   };
 
   render() {
-    console.log(this.props.questionTags);
+    // console.log(this.props.questionTags);
     if (!this.props.allTags || !this.props.allTags.length) {
       return null;
     }
@@ -111,18 +111,18 @@ export default class CreatableMulti extends Component {
             return (
               <Tag
                 explode={this.state.explodeTag === t.id}
-                as="a"
                 onClick={(e) => this.toggleTag(e, t.id)}
                 key={t.id}
                 id={t.id}
                 name={t.name}
                 questionId={this.props.question.id}
                 signedIn={this.props.signedIn}
+                selected={true}
               ></Tag>
             );
           })}
           {this.props.signedIn && !this.state.showSelect && (
-            <a onClick={this.toggleSelect} href="">
+            <a className="more" onClick={this.toggleSelect} href="">
               {this.props.questionTags.length
                 ? 'assign more tags'
                 : 'assign a tag'}
@@ -130,7 +130,7 @@ export default class CreatableMulti extends Component {
           )}
           {!this.props.signedIn && <a>sign in to add tags</a>}
           {this.state.showSelect && (
-            <a onClick={this.toggleSelect} href="">
+            <a className="more" onClick={this.toggleSelect} href="">
               ok
             </a>
           )}

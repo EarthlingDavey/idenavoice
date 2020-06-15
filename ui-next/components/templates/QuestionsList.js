@@ -7,11 +7,11 @@ import { BigHeadingStyles } from '../atoms/BigHeadingStyles';
 import Question from '../molecules/Question';
 
 const QUESTIONS_QUERY = gql`
-  query QuestionsQuery($orderBy: [_QuestionOrdering], $userStates: [String!]) {
-    Question(
-      orderBy: $orderBy
-      filter: { transaction_in: { user: { state_in: $userStates } } }
-    ) {
+  query QuestionsQuery(
+    $orderBy: [_QuestionOrdering]
+    $filter: _QuestionFilter
+  ) {
+    Question(orderBy: $orderBy, filter: $filter) {
       id
       name
       timestamp {
@@ -50,12 +50,20 @@ function Questions(props) {
     (key) => props.userState[key]
   );
 
-  let variables = {
-    orderBy: props.orderBy || null,
-    userStates,
+  let questionFilter = {
+    AND: [{ transaction_in: { user: { state_in: userStates } } }],
   };
 
-  // console.log(variables);
+  if (props.selectedTags.length > 0) {
+    questionFilter.AND.push({ tags_some: { id_in: props.selectedTags } });
+  }
+
+  let variables = {
+    orderBy: props.orderBy || null,
+    filter: questionFilter,
+  };
+
+  console.log(variables);
 
   const { ...result } = useQuery(QUESTIONS_QUERY, {
     variables,
@@ -89,12 +97,29 @@ function Questions(props) {
   );
 }
 
+function toggler(collection, item) {
+  var idx = collection.indexOf(item);
+  if (idx !== -1) {
+    collection.splice(idx, 1);
+  } else {
+    collection.push(item);
+  }
+  return collection;
+}
+
 class QuestionsList extends React.Component {
+  constructor(props) {
+    super(props);
+    this.handleTagClick = this.handleTagClick.bind(this);
+  }
+
   state = {
     userState: { Human: true, Newbie: true, Verified: true, Suspended: true },
     reported: true,
     orderBy: 'timestamp_desc',
+    selectedTags: [],
   };
+
   handleChange = (e) => {
     const { name, type, value } = e.target;
     if (name === 'userState') {
@@ -110,6 +135,15 @@ class QuestionsList extends React.Component {
     this.setState({ [name]: value });
   };
 
+  handleTagClick(e, tagId) {
+    e.preventDefault();
+    console.log(e, tagId);
+
+    this.setState((prevState) => ({
+      selectedTags: toggler(prevState.selectedTags, tagId),
+    }));
+  }
+
   render() {
     return (
       <QuestionsListStyles BigHeadingStyles={BigHeadingStyles}>
@@ -119,6 +153,7 @@ class QuestionsList extends React.Component {
         <SortFilterBar
           {...this.state}
           handleChange={this.handleChange}
+          handleTagClick={this.handleTagClick}
         ></SortFilterBar>
         <Questions {...this.state}></Questions>
       </QuestionsListStyles>

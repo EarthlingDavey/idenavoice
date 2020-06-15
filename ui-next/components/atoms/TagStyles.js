@@ -4,18 +4,31 @@ const TagListStyles = styled.div`
   margin-bottom: 0.2em;
   font-size: 11px;
   position: relative;
+
+  a.more {
+    margin-left: 0.4em;
+    color: inherit;
+  }
 `;
 
 const TagStyles = styled.span`
   /* position: relative; */
   /* font-family: 'Lucida Console', Monaco, monospace; */
   display: inline-flex;
-  padding: 0.2em 0.7em;
+  padding: 0.1em 0.4em;
   margin-right: 0.5em;
   margin-bottom: 0.5em;
   color: #000;
-  background: #ddd;
+
+  &:last-of-type{
+    margin-right: 0;
+  }
+  /* background: #ddd; */
   /* overflow-x: auto; */
+
+  border: 3px solid #ddd;
+  background-color: ${(props) => (props.selected ? '#ddd' : 'white')};
+  /* border-color: ${(props) => (props.selected ? '#ddd' : 'pink')}; */
 
   .tag-popup {
     position: absolute;
