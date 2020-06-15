@@ -27,6 +27,7 @@ export function QuestionsBlock(props) {
             key={question.transaction.hash}
             question={question}
             allTags={data.Tag}
+            signedIn={data.viewer ? true : false}
           ></Question>
         );
       })}

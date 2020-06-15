@@ -12,6 +12,7 @@ const QUESTIONS_QUERY = gql`
       orderBy: $orderBy
       filter: { transaction_in: { user: { state_in: $userStates } } }
     ) {
+      id
       name
       timestamp {
         formatted
@@ -29,6 +30,17 @@ const QUESTIONS_QUERY = gql`
           age
         }
       }
+      tags {
+        id
+        name
+      }
+    }
+    Tag {
+      id
+      name
+    }
+    viewer {
+      address
     }
   }
 `;
@@ -68,6 +80,8 @@ function Questions(props) {
           <Question
             key={question.transaction.hash}
             question={question}
+            allTags={data.Tag}
+            signedIn={data.viewer ? true : false}
           ></Question>
         );
       })}

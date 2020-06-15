@@ -9,7 +9,11 @@ export default function SingleQuestion(props) {
   return (
     <div>
       <BigHeading>QUESTION</BigHeading>
-      <Question question={question} transaction={props.tx}></Question>
+      <Question
+        allTags={props.allTags}
+        question={question}
+        transaction={props.tx}
+      ></Question>
       <BigHeading>RESPONSES</BigHeading>
       {/* <SortFilterBarQuestion></SortFilterBarQuestion> */}
       <AnswerHistory

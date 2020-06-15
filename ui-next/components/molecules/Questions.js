@@ -31,6 +31,9 @@ const QUESTIONS_QUERY = gql`
       id
       name
     }
+    viewer {
+      address
+    }
   }
 `;
 

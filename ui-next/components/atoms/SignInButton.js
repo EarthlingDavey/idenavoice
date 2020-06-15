@@ -32,7 +32,7 @@ function SignInButton({ input }) {
       token,
       nonce_endpoint: siteUrl + '/auth/v1/start-session',
       authentication_endpoint: siteUrl + '/auth/v1/authenticate',
-      favicon_url: '',
+      favicon_url: siteUrl + '/favicons/client-80x80.png',
     };
 
     const query = querystring.encode(queryObject);

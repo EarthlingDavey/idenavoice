@@ -3,6 +3,8 @@ import { toast } from 'react-toastify';
 
 import CreatableSelect from 'react-select/creatable';
 // import { colourOptions } from '../data';
+import Tag from '../atoms/Tag';
+import { TagListStyles } from '../atoms/TagStyles';
 
 const Svg = ({ size, ...props }) => (
   <svg
@@ -35,26 +37,13 @@ const MyMultiValueRemove = ({ children, innerProps, data }) => {
   }
   return <div {...innerProps}>{children || <CrossIcon size={14} />}</div>;
 };
-
-const MyMultiValueLabel = ({ children, innerProps }) => {
-  const handleClick = (e) => {
-    e.preventDefault();
-    e.stopPropagation();
-    console.log('Clicked');
-    return false;
-  };
-  return (
-    <div {...innerProps}>
-      {' '}
-      {children}
-      <span onClick={handleClick}>🔼</span>
-      <span onClick={handleClick}>🔽</span>
-    </div>
-  );
+const MyClearIndicator = ({ children, innerProps, data }) => {
+  return null;
 };
 
 export default class CreatableMulti extends Component {
-  prepOptions = (options) => {
+  prepOptions = (options, questionTags) => {
+    console.log({ questionTags });
     let newOptions = [];
     for (let i = 0; i < options.length; i++) {
       const o = options[i];
@@ -62,14 +51,21 @@ export default class CreatableMulti extends Component {
       newOptions.push({
         value: o.id,
         label: o.name,
-        clearable: false,
+        clearable:
+          questionTags && questionTags.findIndex((obj) => obj.id === o.id) >= 0
+            ? false
+            : true,
       });
     }
     return newOptions;
   };
 
   state = {
-    selected: this.prepOptions(this.props.questionTags),
+    selected: this.props.questionTags
+      ? this.prepOptions(this.props.questionTags, this.props.questionTags)
+      : [],
+    showSelect: false,
+    explodeTag: '',
   };
 
   handleChange = (newValue, actionMeta) => {
@@ -78,11 +74,29 @@ export default class CreatableMulti extends Component {
     // console.log(`action: ${actionMeta.action}`);
     // console.groupEnd();
     this.setState({ selected: newValue });
-    this.props.handleTagChange(newValue);
+    this.props.handleTagChange(newValue, this.state.selected);
   };
+
   handleCreate = (inputValue) => {
     toast('Go to your account to create tags.');
     return false;
+  };
+
+  toggleSelect = (e) => {
+    e.preventDefault();
+    this.setState({ showSelect: !this.state.showSelect });
+  };
+
+  toggleTag = (e, id) => {
+    console.log(e);
+    console.log(id);
+    e.preventDefault();
+    if (this.state.explodeTag === id) {
+      this.setState({ explodeTag: '' });
+    } else {
+      this.setState({ explodeTag: id });
+    }
+    // this.setState({ showSelect: !this.state.showSelect });
   };
 
   render() {
@@ -92,19 +106,50 @@ export default class CreatableMulti extends Component {
     }
     return (
       <>
-        <CreatableSelect
-          placeholder={'tags...'}
-          components={{
-            MultiValueLabel: MyMultiValueLabel,
-            MultiValueRemove: MyMultiValueRemove,
-          }}
-          value={this.state.selected}
-          isMulti
-          onChange={this.handleChange}
-          options={this.prepOptions(this.props.allTags)}
-          openMenuOnClick={false}
-          onCreateOption={this.handleCreate}
-        />
+        <TagListStyles>
+          {this.props.questionTags.map((t, i) => {
+            return (
+              <Tag
+                explode={this.state.explodeTag === t.id}
+                as="a"
+                onClick={(e) => this.toggleTag(e, t.id)}
+                key={t.id}
+                name={t.name}
+                signedIn={this.props.signedIn}
+              ></Tag>
+            );
+          })}
+          {this.props.signedIn && !this.state.showSelect && (
+            <a onClick={this.toggleSelect} href="">
+              {this.props.questionTags.length
+                ? 'assign more tags'
+                : 'assign a tag'}
+            </a>
+          )}
+          {!this.props.signedIn && <a>sign in to add tags</a>}
+          {this.state.showSelect && (
+            <a onClick={this.toggleSelect} href="">
+              ok
+            </a>
+          )}
+        </TagListStyles>
+        {this.state.showSelect && (
+          <CreatableSelect
+            placeholder={'tags...'}
+            components={{
+              MultiValueRemove: MyMultiValueRemove,
+              ClearIndicator: MyClearIndicator,
+            }}
+            value={this.state.selected}
+            isMulti
+            onChange={this.handleChange}
+            options={this.prepOptions(
+              this.props.allTags,
+              this.props.questionTags
+            )}
+            onCreateOption={this.handleCreate}
+          />
+        )}
       </>
     );
   }

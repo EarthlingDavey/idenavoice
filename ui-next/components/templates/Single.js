@@ -27,6 +27,7 @@ const TRANSACTION_QUERY = gql`
       answer {
         name
         question {
+          id
           name
           timestamp {
             formatted
@@ -43,10 +44,15 @@ const TRANSACTION_QUERY = gql`
               age
             }
           }
+          tags {
+            id
+            name
+          }
         }
       }
       # If we have a question
       questions {
+        id
         name
         timestamp {
           formatted
@@ -72,7 +78,15 @@ const TRANSACTION_QUERY = gql`
             old
           }
         }
+        tags {
+          id
+          name
+        }
       }
+    }
+    Tag {
+      id
+      name
     }
   }
 `;
@@ -102,7 +116,12 @@ export default function Single(props) {
 
   return (
     <SingleStyles>
-      {tx.questions.length > 0 && <SingleQuestion tx={tx} />}
+      {tx.questions.length > 0 && (
+        <SingleQuestion
+          tx={tx}
+          allTags={result.data.Tag ? result.data.Tag : null}
+        />
+      )}
       {tx.answer && <SingleResponse tx={tx} />}
     </SingleStyles>
   );

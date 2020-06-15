@@ -32,6 +32,18 @@ const ADD_QUESTION_TAGS = gql`
     }
   }
 `;
+const REMOVE_QUESTION_TAGS = gql`
+  mutation RemoveQuestionTags($questionId: ID!, $tagId: ID!) {
+    RemoveQuestionTags(from: { id: $questionId }, to: { id: $tagId }) {
+      from {
+        name
+      }
+      to {
+        name
+      }
+    }
+  }
+`;
 
 function button(question, answer, txHash) {
   const schemaForChooseAction = {
@@ -97,19 +109,49 @@ export default function Question(props) {
   const question = props.question;
 
   const [MergeQuestionTags, { data }] = useMutation(ADD_QUESTION_TAGS);
+  const [RemoveQuestionTags, { data2 }] = useMutation(REMOVE_QUESTION_TAGS);
 
-  async function handleTagChange(tags) {
-    console.log(question.id);
-    console.log({ tags });
+  async function handleTagChange(tags, previousSelection) {
+    // console.log(question.id);
+    // console.log({ tags });
+
+    let tagsToRemove;
+
+    if (!tags & previousSelection) {
+      tagsToRemove = previousSelection;
+    } else if (previousSelection) {
+      tagsToRemove = previousSelection.filter(
+        ({ value: id1 }) => !tags.some(({ value: id2 }) => id2 === id1)
+      );
+    }
+
+    if (tagsToRemove && tagsToRemove.length) {
+      for (let i = 0; i < tagsToRemove.length; i++) {
+        const t = tagsToRemove[i];
+        console.log('removing:', t);
+        RemoveQuestionTags({
+          variables: {
+            questionId: question.id,
+            tagId: t.value,
+          },
+          refetchQueries: ['GET_TAGS'],
+        });
+      }
+    }
+
+    if (!tags || !tags.length) {
+      return;
+    }
+
     for (let i = 0; i < tags.length; i++) {
       const t = tags[i];
-      console.log(t);
+      // console.log(t);
       MergeQuestionTags({
         variables: {
           questionId: question.id,
           tagId: t.value,
         },
-        // refetchQueries: ['GET_TAGS'],
+        refetchQueries: ['GET_TAGS'],
       });
     }
     // const response = await AddQuestionTags({
@@ -156,6 +198,7 @@ export default function Question(props) {
         questionTags={props.question.tags}
         question={question}
         handleTagChange={handleTagChange}
+        signedIn={props.signedIn}
       ></QuestionTags>
       <Respond question={question} transaction={transaction}></Respond>
     </QuestionStyles>

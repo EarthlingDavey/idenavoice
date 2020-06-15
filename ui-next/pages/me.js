@@ -12,7 +12,6 @@ const VIEWER_QUERY = gql`
   query ViewerQuery {
     viewer {
       address
-      address
       age
       state
     }
