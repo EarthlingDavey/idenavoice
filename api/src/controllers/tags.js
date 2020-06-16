@@ -122,17 +122,24 @@ async function tagsToRecount(dbActions, dbRemovedActions) {
   return tags;
 }
 async function updateTagCount(session, tagId) {
-  console.log('tagId', tagId);
+  // console.log('tagId', tagId);
 
   try {
     const result = await session.run(
       `
-      MATCH (t:Tag)<-[r:ACTION_ON_TAG]-(a:Action)
-      WHERE t.id = $tagId AND NOT (a)-[:ACTION_ON_QUESTION]-()
-      // RETURN sum(a.qty)
+      MATCH (t:Tag)<-[r:ACTION_ON_TAG]-(a:Action)-[:USER_ACTION]->(u:User)
+      WHERE t.id = $tagId AND u.state IN ['Human', 'Verified'] AND NOT (a)-[:ACTION_ON_QUESTION]-()
       WITH t, sum(a.qty) AS qtySum
 
       SET t.voteCountCache = qtySum
+
+      WITH count(*) as dummy 
+
+      // MATCH (t:Tag)<-[r:ACTION_ON_TAG]-(a:Action)-[:USER_ACTION]->(u:User)
+      // WHERE t.id = $tagId AND NOT u.state IN ['Human', 'Verified'] AND NOT (a)-[:ACTION_ON_QUESTION]-()
+      // WITH t, sum(a.qty) AS qtySum
+
+      // SET t.voteCountCache = 0
 
       WITH count(*) as dummy 
 

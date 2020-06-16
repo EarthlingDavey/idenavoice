@@ -66,13 +66,13 @@ const Query = {
           dbUser.state = 'Undefined';
         }
 
-        console.log(limits);
+        // console.log(limits);
 
         var limit = limits.find((obj) => {
           return obj.state === dbUser.state;
         });
 
-        console.log(limit);
+        // console.log(limit);
 
         dbUser.limits = [];
 
@@ -87,7 +87,7 @@ const Query = {
           dbUser.limits.push({ name: key, number: limit[key] });
         }
 
-        console.log(dbUser);
+        // console.log(dbUser);
         session.close();
 
         return dbUser;

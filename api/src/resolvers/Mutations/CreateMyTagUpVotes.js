@@ -3,6 +3,8 @@ import jwt from 'jsonwebtoken';
 import { neo4jgraphql, cypherQuery, cypherMutation } from 'neo4j-graphql-js';
 const { AuthenticationError } = require('apollo-server');
 
+const { limits } = require('../../lib/limits');
+
 import { getUserByAddress } from '../../controllers/auth';
 import {
   getTagByName,
@@ -55,7 +57,7 @@ async function CreateMyTagUpVotes(_parent, args, ctx, _info) {
       let session = ctx.driver.session();
       // get the user info by address
       const dbUser = await getUserByAddress(session, address);
-      console.log(dbUser);
+      // console.log(dbUser);
 
       if (!dbUser) {
         throw new AuthenticationError(
@@ -70,9 +72,9 @@ async function CreateMyTagUpVotes(_parent, args, ctx, _info) {
       }
 
       const mySpareCredits = spareCredits(args.actions);
-      console.log(mySpareCredits);
+      // console.log(mySpareCredits);
 
-      console.log(args);
+      // console.log(args);
 
       // check to see if the up-votes are valid, do they add up to 100?
       if (mySpareCredits < 0) {
@@ -96,6 +98,19 @@ async function CreateMyTagUpVotes(_parent, args, ctx, _info) {
 
       // console.log('a user has just updated their tag votes');
 
+      // should we count these votes?
+      // TODO - periodically update vote count cache
+      // console.log({ dbUser });
+
+      var limit = limits.find((obj) => {
+        return obj.state === dbUser.state;
+      });
+
+      if (limit.tagPreferences === 0) {
+        // session.close();
+        // return dbActions;
+      }
+
       // we need to set some orders on the tags
       // todo remove await and close session after promise is returned
       const tags = await tagsToRecount(dbActions, dbRemovedActions);
@@ -104,7 +119,7 @@ async function CreateMyTagUpVotes(_parent, args, ctx, _info) {
       for (let i = 0; i < tags.length; i++) {
         const dbTag = await updateTagCount(session, tags[i].tagId);
         // console.log('dbTag:');
-        console.log(dbTag);
+        // console.log(dbTag);
       }
 
       session.close();

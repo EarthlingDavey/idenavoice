@@ -21,7 +21,7 @@ async function getTagAction(session, tagId, address, name) {
 }
 
 async function creatUpdateTagAction(session, tagId, address, name, qty) {
-  console.log({ tagId, address, name, qty });
+  // console.log({ tagId, address, name, qty });
   try {
     const result = await session.run(
       `

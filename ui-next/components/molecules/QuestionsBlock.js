@@ -71,12 +71,12 @@ export function QuestionsBlock(props) {
   if (loading || !data) {
     return <p>Loading</p>;
   }
-  if (
-    (data.Tag[0] && !data.Tag[0].questions) ||
-    data.Tag[0].questions.length == 0
-  ) {
-    return <p>No questions</p>;
-  }
+  // if (
+  //   (data.Tag[0] && !data.Tag[0].questions) ||
+  //   data.Tag[0].questions.length == 0
+  // ) {
+  //   return <p>No questions</p>;
+  // }
 
   const questions = data.Tag[0].questions;
 
@@ -86,6 +86,7 @@ export function QuestionsBlock(props) {
       ButtonGroupStyles={ButtonGroupStyles}
     >
       {props.children}
+      {!questions.length && <p>No questions with this tag</p>}
       {questions.map((question, i) => {
         return (
           <Question

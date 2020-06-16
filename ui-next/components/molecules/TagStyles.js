@@ -4,6 +4,13 @@ const TagCreateStyles = styled.div`
   /* display: flex;
   align-items: center; */
 `;
+const TagListStyles = styled.div`
+  a {
+    font-size: 11px;
+    color: inherit;
+    vertical-align: middle;
+  }
+`;
 
 const TagVotingStyles = styled.div`
   /* display: flex; */
@@ -22,4 +29,4 @@ const TagVotingStyles = styled.div`
     `}
 `;
 
-module.exports = { TagCreateStyles, TagVotingStyles };
+module.exports = { TagCreateStyles, TagListStyles, TagVotingStyles };

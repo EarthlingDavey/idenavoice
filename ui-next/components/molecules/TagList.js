@@ -1,5 +1,7 @@
-import { TagCreateStyles } from './TagStyles';
+import { toast } from 'react-toastify';
+import { TagListStyles } from './TagStyles';
 import Textarea from '../atoms/Textarea';
+import Button from '../atoms/Button';
 
 import { useQuery, useMutation } from '@apollo/react-hooks';
 import gql from 'graphql-tag';
@@ -10,6 +12,9 @@ const GET_TAGS = gql`
       id
       name
       voteCountCache
+      questions(first: 1) {
+        id
+      }
     }
   }
 `;
@@ -38,45 +43,60 @@ export default function TagList(props) {
     };
   }
 
+  const [DeleteTag, { data, loading, error }] = useMutation(DELETE_TAG);
+
+  if (error) {
+    toast('Oops an error occurred');
+  }
+  if (!error && !loading && data) {
+    // TODO add some checks and toast id of tag id to prevent default msgs
+    toast('Tag deleted');
+  }
+
   const { ...result } = useQuery(GET_TAGS, {
     variables,
     // pollInterval: 3500,
   });
-  const [DeleteTag, { data2 }] = useMutation(DELETE_TAG);
-
-  const data = result.data;
+  const dataQ = result.data;
 
   // console.log(data);
 
-  if (!data) {
+  if (!dataQ) {
     return <p>Loading</p>;
   }
 
   return (
-    <div>
-      <p>tag list</p>
+    <TagListStyles>
+      <p>
+        Initially you have the option to delete tags. Once they have been
+        assigned to question(s) or voted on you may not delete them.
+      </p>
       <ul>
-        {data.Tag.map((t, i) => {
+        {dataQ.Tag.map((t, i) => {
           return (
             <li key={t.id}>
-              {t.name} votes from everyone: {t.voteCountCache}{' '}
-              {props.userAddress && (
-                <button
-                  onClick={(e) => {
-                    e.preventDefault();
-                    DeleteTag({
-                      variables: { id: t.id },
-                      refetchQueries: ['Tag'],
-                    });
-                  }}
-                >
-                  delete me
-                </button>
-              )}
+              {t.name} votes from everyone:{' '}
+              {t.voteCountCache ? t.voteCountCache : 0}{' '}
+              {props.userAddress &&
+                t.questions.length === 0 &&
+                (t.voteCountCache === 0 || !t.voteCountCache) && (
+                  <a
+                    href="#"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      DeleteTag({
+                        variables: { id: t.id },
+                        refetchQueries: ['GET_TAGS'],
+                      });
+                    }}
+                  >
+                    delete me
+                  </a>
+                )}
             </li>
           );
         })}
       </ul>
-    </div>
+    </TagListStyles>
   );
 }

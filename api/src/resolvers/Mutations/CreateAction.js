@@ -18,12 +18,12 @@ async function CreateAction(_parent, args, ctx, _info) {
   if (token) {
     try {
       const { address } = jwt.verify(token, JWT_SECRET);
-      console.log(address);
+      // console.log(address);
 
       let session = ctx.driver.session();
       // get the user info by address
       const dbUser = await getUserByAddress(session, address);
-      console.log(dbUser);
+      // console.log(dbUser);
 
       if (!dbUser) {
         throw new AuthenticationError(
@@ -44,7 +44,7 @@ async function CreateAction(_parent, args, ctx, _info) {
         args.data.name
       );
 
-      console.log(dbAction);
+      // console.log(dbAction);
 
       if (!dbAction) {
         dbAction = await creatUpdateTagAction(
@@ -58,7 +58,7 @@ async function CreateAction(_parent, args, ctx, _info) {
 
       // return null;
 
-      console.log(dbAction);
+      // console.log(dbAction);
 
       session.close();
       // let payload = {};

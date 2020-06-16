@@ -31,7 +31,7 @@ const limits = [
   },
   {
     state: 'Undefined',
-    tags: 0,
+    tags: 10,
     tagPreferences: 0,
     tagRelevance: 0,
   },

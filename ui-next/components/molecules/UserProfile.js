@@ -30,7 +30,7 @@ export default function UserProfile(props) {
         <dt>Account freedom</dt>
         {props.user.limits.map((l, i) => {
           return (
-            <dd>
+            <dd key={l.name}>
               <MonoStyles>
                 {l.name} {l.number}
               </MonoStyles>
