@@ -32,11 +32,12 @@ async function createUpdateQuestion(session, tx, question) {
       `
       MERGE (t:Transaction { hash: $hash })
       MERGE (t)-[r:QUESTION_IN]->(q:Question { name: $name })
-      ON CREATE SET  q.name = $name, q.timestamp = datetime($timestamp), q.id = apoc.create.uuid()
+      ON CREATE SET  q.name = $name, q.timestamp = datetime($timestamp), q.epoch = epoch, q.id = apoc.create.uuid()
       RETURN q { .name, .timestamp, .id } AS q`,
       {
         hash: tx.hash,
         timestamp: new Date(tx.timestamp * 1000).toISOString(),
+        epoch: tx.timestamp,
         name: question.name,
       }
     );
@@ -54,12 +55,13 @@ async function createQuestion(session, tx) {
     const result = await session.run(
       `
       MERGE (q:Question { hash: $hash })
-      ON CREATE SET  q.name = $name, q.timestamp = datetime($timestamp)
+      ON CREATE SET  q.name = $name, q.timestamp = datetime($timestamp), q.epoch = epoch
       ON MATCH SET q.name = $name, q.timestamp = datetime($timestamp)
       RETURN q { .hash , .name, .timestamp } AS q`,
       {
         hash: tx.hash,
         timestamp: new Date(tx.timestamp * 1000).toISOString(),
+        epoch: tx.timestamp,
         name: tx.question.name,
       }
     );

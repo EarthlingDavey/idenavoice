@@ -1,53 +1,40 @@
-import { useQuery, useMutation } from '@apollo/react-hooks';
-import gql from 'graphql-tag';
+import React, { useState, useEffect } from 'react';
 import QuestionsBlock from './QuestionsBlock';
+import SortFilterBarFront from './SortFilterBarFront';
 
-const QUESTIONS_QUERY = gql`
-  query QuestionsQuery {
-    Question(orderBy: timestamp_desc, first: 8) {
-      id
-      name
-      timestamp {
-        formatted
-      }
-      answers {
-        name
-        countNewestOnly
-      }
-      transaction {
-        hash
-        user {
-          address
-          age
-          state
-        }
-      }
-      tags {
-        id
-        name
-      }
-    }
-    Tag(orderBy: voteCountCache_desc) {
-      id
-      name
-    }
-    viewer {
-      address
-    }
+class Question extends React.Component {
+  constructor(props) {
+    super(props);
+    this.handleTagClick = this.handleTagClick.bind(this);
   }
-`;
 
-export default function Questions(props) {
-  const { ...result } = useQuery(QUESTIONS_QUERY, {
-    variables: {},
-    pollInterval: 3500,
-  });
+  state = {
+    selectedTags: [],
+  };
 
-  // console.log(result);
+  handleTagClick(e, tagId) {
+    if (e) {
+      e.preventDefault();
+    }
+    console.log(e, tagId);
 
-  return (
-    <>
-      <QuestionsBlock {...result} />
-    </>
-  );
+    this.setState((prevState) => ({
+      selectedTags: [tagId],
+    }));
+  }
+
+  render() {
+    return (
+      <>
+        <QuestionsBlock selectedTags={this.state.selectedTags}>
+          <SortFilterBarFront
+            handleTagClick={this.handleTagClick}
+            selectedTags={this.state.selectedTags}
+          ></SortFilterBarFront>
+        </QuestionsBlock>
+      </>
+    );
+  }
 }
+
+export default Question;

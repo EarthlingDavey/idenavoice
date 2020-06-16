@@ -1,27 +1,87 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
+import { useQuery, useMutation } from '@apollo/react-hooks';
+import gql from 'graphql-tag';
+
 import Question from './Question';
 import { QuestionsStyles } from './QuestionStyles';
 import { TxListItemStyles } from './TxListItemStyles';
+import { SortFilterBarStyles } from './SortFilterBarStyles';
 
 import Button from '../atoms/Button';
 import SubTest from './SubTest';
 
+import Tag from '../atoms/Tag';
 import { ButtonStyles, ButtonGroupStyles } from '../atoms/ButtonStyles';
 
-export function QuestionsBlock(props) {
-  const data = props.data;
+const QUESTIONS_QUERY = gql`
+  query QuestionsQuery($tagFilter: _TagFilter) {
+    Tag(orderBy: voteCountCache_desc, first: 1, filter: $tagFilter) {
+      id
+      name
+      questions(orderBy: epoch_desc, first: 8) {
+        id
+        name
+        timestamp {
+          formatted
+        }
+        answers {
+          name
+          countNewestOnly
+        }
+        transaction {
+          hash
+          user {
+            address
+            age
+            state
+          }
+        }
+        tags {
+          id
+          name
+        }
+      }
+    }
+    viewer {
+      address
+    }
+  }
+`;
 
-  if (!data) {
+export function QuestionsBlock(props) {
+  let tagFilter = {};
+
+  if (props.selectedTags.length > 0) {
+    tagFilter = { id: props.selectedTags[0] };
+  }
+
+  const { loading, error, data, refetch } = useQuery(QUESTIONS_QUERY, {
+    variables: {
+      tagFilter,
+    },
+    pollInterval: 3500,
+  });
+
+  if (loading) {
     return <p>Loading</p>;
   }
-  if (!data.Question || data.Question.length == 0) {
+  if (
+    (data.Tag[0] && !data.Tag[0].questions) ||
+    data.Tag[0].questions.length == 0
+  ) {
     return <p>No questions</p>;
   }
 
+  const questions = data.Tag[0].questions;
+
   return (
-    <QuestionsStyles ButtonGroupStyles={ButtonGroupStyles}>
-      {data.Question.map((question, i) => {
+    <QuestionsStyles
+      SortFilterBarStyles={SortFilterBarStyles}
+      ButtonGroupStyles={ButtonGroupStyles}
+    >
+      {props.children}
+      {questions.map((question, i) => {
         return (
           <Question
             key={question.transaction.hash}

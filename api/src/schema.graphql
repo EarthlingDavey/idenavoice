@@ -22,6 +22,7 @@ type Question {
   tags: [Tag] @relation(name: "TAG_FOR_QUESTION", direction: "OUT")
   actions: [Action] @relation(name: "ACTION_ON_QUESTION", direction: "IN")
   timestamp: DateTime
+  epoch: Int
   transaction: Transaction @relation(name: "QUESTION_IN", direction: "IN")
   allAnswersTransactions: [Transaction]
     @cypher(
@@ -64,6 +65,7 @@ type Transaction {
   questions: [Question] @relation(name: "QUESTION_IN", direction: "OUT")
   answer: Answer @relation(name: "TX_CHOSE", direction: "OUT")
   timestamp: DateTime
+  epoch: Int
   txChose: TxChose
   user: User @relation(name: "USER_TX", direction: "OUT")
 }

@@ -44,6 +44,17 @@ const QuestionsStyles = styled.div`
         }
       }
     `}
+  ${(props) =>
+    props.SortFilterBarStyles &&
+    css`
+      ${props.SortFilterBarStyles} {
+        justify-content: flex-start;
+        ul {
+          padding: 0;
+          margin: 0;
+        }
+      }
+    `}
 `;
 
 module.exports = { QuestionStyles, QuestionsStyles };
