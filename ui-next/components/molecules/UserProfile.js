@@ -27,16 +27,20 @@ export default function UserProfile(props) {
             </dd>
           </>
         )}
-        <dt>Account freedom</dt>
-        {props.user.limits.map((l, i) => {
-          return (
-            <dd key={l.name}>
-              <MonoStyles>
-                {l.name} {l.number}
-              </MonoStyles>
-            </dd>
-          );
-        })}
+        {props.user.limits && (
+          <>
+            <dt>Account freedom</dt>
+            {props.user.limits.map((l, i) => {
+              return (
+                <dd key={l.name}>
+                  <MonoStyles>
+                    {l.name} {l.number}
+                  </MonoStyles>
+                </dd>
+              );
+            })}
+          </>
+        )}
       </dl>
     </UserProfileStyles>
   );
