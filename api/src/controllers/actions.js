@@ -122,15 +122,20 @@ async function removeTagActions(session, address) {
     const result = await session.run(
       `
       MATCH (t:Tag)<-[r:ACTION_ON_TAG]-(a:Action)-[r2:USER_ACTION]->(u:User {address: $address})
-      DETACH DELETE a`,
+      // You can use a WITH clause to alias the data (properties) you want to return and delete the node in the same query:
+      WITH a, { name: a.name, qty:a.qty , tagId: t.id } AS removedActions
+      DETACH DELETE a
+      RETURN removedActions`,
       { address }
     );
 
-    const singleRecord = result.records[0];
-    if (!singleRecord) {
+    const dbActions = result.records.map((record) => record.get(0));
+
+    // console.log(dbActions);
+    if (!dbActions) {
       return false;
     }
-    return singleRecord.get(0);
+    return dbActions;
   } catch (error) {
     console.log(error);
     return false;
@@ -144,12 +149,12 @@ async function batchCreateTagActions(session, address, actions) {
       UNWIND $actions AS a
       MATCH (t:Tag { id: a.tagId }), (u:User {address: $address})
       CREATE (t)<-[r:ACTION_ON_TAG]-(newAction:Action { name: a.name, qty: a.qty })-[r2:USER_ACTION]->(u)
-      RETURN a { .name, .qty } AS x
+      RETURN a { .name, .qty, .tagId } AS x
       `,
       { address, actions }
     );
 
-    console.log(result.records);
+    // console.log(result.records);
 
     const dbActions = result.records.map((record) => record.get(0));
 

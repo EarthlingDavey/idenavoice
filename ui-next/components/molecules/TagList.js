@@ -9,6 +9,7 @@ const GET_TAGS = gql`
     Tag(filter: $filter) {
       id
       name
+      voteCountCache
     }
   }
 `;
@@ -58,14 +59,14 @@ export default function TagList(props) {
         {data.Tag.map((t, i) => {
           return (
             <li key={t.id}>
-              {t.name}{' '}
+              {t.name} votes from everyone: {t.voteCountCache}{' '}
               {props.userAddress && (
                 <button
                   onClick={(e) => {
                     e.preventDefault();
                     DeleteTag({
                       variables: { id: t.id },
-                      refetchQueries: ['GET_TAGS'],
+                      refetchQueries: ['Tag'],
                     });
                   }}
                 >

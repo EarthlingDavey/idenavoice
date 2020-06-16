@@ -101,6 +101,7 @@ type Tag {
   user: User @relation(name: "USER_TAG", direction: "OUT")
   actions: [Action] @relation(name: "ACTION_ON_TAG", direction: "IN")
   questions: [Question] @relation(name: "TAG_FOR_QUESTION", direction: "IN")
+  voteCountCache: Int
   countActionsWithQuestionUp(questionId: ID!): Int
     @cypher(
       statement: """

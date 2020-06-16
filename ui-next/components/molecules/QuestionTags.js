@@ -128,7 +128,9 @@ export default class CreatableMulti extends Component {
                 : 'assign a tag'}
             </a>
           )}
-          {!this.props.signedIn && <a>sign in to add tags</a>}
+          {!this.props.signedIn && (
+            <span className="more">sign in to add tags</span>
+          )}
           {this.state.showSelect && (
             <a className="more" onClick={this.toggleSelect} href="">
               ok

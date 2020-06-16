@@ -4,7 +4,12 @@ import { neo4jgraphql, cypherQuery, cypherMutation } from 'neo4j-graphql-js';
 const { AuthenticationError } = require('apollo-server');
 
 import { getUserByAddress } from '../../controllers/auth';
-import { getTagByName, createTagWithUser } from '../../controllers/tags';
+import {
+  getTagByName,
+  createTagWithUser,
+  tagsToRecount,
+  updateTagCount,
+} from '../../controllers/tags';
 import {
   getTagAction,
   creatUpdateTagAction,
@@ -89,7 +94,18 @@ async function CreateMyTagUpVotes(_parent, args, ctx, _info) {
         args.actions
       );
 
-      console.log(dbActions);
+      // console.log('a user has just updated their tag votes');
+
+      // we need to set some orders on the tags
+      // todo remove await and close session after promise is returned
+      const tags = await tagsToRecount(dbActions, dbRemovedActions);
+      // console.log(tags);
+
+      for (let i = 0; i < tags.length; i++) {
+        const dbTag = await updateTagCount(session, tags[i].tagId);
+        // console.log('dbTag:');
+        console.log(dbTag);
+      }
 
       session.close();
       // let payload = {};
