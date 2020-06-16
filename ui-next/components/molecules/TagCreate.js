@@ -72,7 +72,7 @@ export default function TagCreate(props) {
         ></Textarea>
         <ButtonStyles
           disabled={tagsLimit.number === 0}
-          as="botton"
+          as="button"
           type="submit"
         >
           <span>Add Tag</span>
