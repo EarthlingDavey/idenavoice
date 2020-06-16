@@ -2,6 +2,7 @@ import { toast } from 'react-toastify';
 
 import { TagCreateStyles } from './TagStyles';
 import Textarea from '../atoms/Textarea';
+import { ButtonStyles } from '../atoms/ButtonStyles';
 
 import { useMutation } from '@apollo/react-hooks';
 import gql from 'graphql-tag';
@@ -33,6 +34,11 @@ export default function TagCreate(props) {
   return (
     <TagCreateStyles>
       <p>You can create {tagsLimit.number} tags</p>
+      <p>
+        Everyone will be able to see them, they can be assigned to questions.
+        Questions from the top 3 tags will be shown on the homepage.
+      </p>
+      <p>All lowercase and only a-z letters</p>
       <form
         disabled={tagsLimit.number === 0}
         onSubmit={(e) => {
@@ -62,11 +68,15 @@ export default function TagCreate(props) {
             textarea = node;
           }}
           name="tag"
-          placeholder="Type your tag here"
+          placeholder="Type your tag"
         ></Textarea>
-        <button disabled={tagsLimit.number === 0} type="submit">
-          Add Tag
-        </button>
+        <ButtonStyles
+          disabled={tagsLimit.number === 0}
+          as="botton"
+          type="submit"
+        >
+          <span>Add Tag</span>
+        </ButtonStyles>
       </form>
     </TagCreateStyles>
   );

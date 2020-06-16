@@ -27,12 +27,12 @@ export default function SignInTemplate(props) {
         </p>
       </ContentWrapper> */}
 
-      <ContentWrapper width="100%">
-        <TagsRow
-          userLimits={props.user.limits}
-          userAddress={props.user.address}
-        ></TagsRow>
-      </ContentWrapper>
+      {/* <ContentWrapper width="100%"> */}
+      <TagsRow
+        userLimits={props.user.limits}
+        userAddress={props.user.address}
+      ></TagsRow>
+      {/* </ContentWrapper> */}
     </Wrapper>
   );
 }

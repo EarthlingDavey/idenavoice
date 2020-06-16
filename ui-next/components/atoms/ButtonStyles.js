@@ -2,7 +2,7 @@ import styled from 'styled-components';
 
 const ButtonStyles = styled.button`
   padding: 0.1em;
-  border: 7px solid #000000;
+  border: 5px solid #000000;
   color: inherit;
   display: inline-block;
   cursor: pointer;
