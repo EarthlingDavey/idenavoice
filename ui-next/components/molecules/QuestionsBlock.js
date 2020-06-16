@@ -89,7 +89,7 @@ export function QuestionsBlock(props) {
       ButtonGroupStyles={ButtonGroupStyles}
     >
       {props.children}
-      {!questions.length && <p>No questions with this tag</p>}
+      {!questions.length && <p>No questions to show</p>}
       {questions.map((question, i) => {
         return (
           <Question

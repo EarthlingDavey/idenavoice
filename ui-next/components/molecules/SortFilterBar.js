@@ -113,7 +113,7 @@ export default function SortFilterBar(props) {
           handleChange={props.handleChange}
         ></Select>
       </SortFilterBarStyles>
-      {data && data.Tag && data.Tag.length && (
+      {data && data.Tag && data.Tag.length !== 0 && (
         <SortFilterBarStyles
           SelectStyles={SelectStyles}
           CheckboxInputStyles={CheckboxInputStyles}
@@ -132,6 +132,15 @@ export default function SortFilterBar(props) {
               );
             })}
           </ul>
+        </SortFilterBarStyles>
+      )}
+      {data && data.Tag && data.Tag.length === 0 && (
+        <SortFilterBarStyles
+          SelectStyles={SelectStyles}
+          CheckboxInputStyles={CheckboxInputStyles}
+        >
+          <h3>Tags </h3>
+          <p>Not tags have been created yet</p>
         </SortFilterBarStyles>
       )}
     </>
