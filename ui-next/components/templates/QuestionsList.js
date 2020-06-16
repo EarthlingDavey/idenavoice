@@ -41,6 +41,11 @@ const QUESTIONS_QUERY = gql`
     }
     viewer {
       address
+      state
+      limits {
+        name
+        number
+      }
     }
   }
 `;

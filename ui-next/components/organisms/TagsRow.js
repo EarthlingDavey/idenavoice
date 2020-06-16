@@ -10,7 +10,7 @@ export default function TagsRow(props) {
       <h3>My tags </h3>
       <TagList userAddress={props.userAddress}></TagList>
       <h3>Tag creation </h3>
-      <TagCreate></TagCreate>
+      <TagCreate userLimits={props.userLimits}></TagCreate>
       <h3>Tag voting</h3>
       <TagVoting userAddress={props.userAddress}></TagVoting>
     </div>

@@ -3,8 +3,14 @@ import jwt from 'jsonwebtoken';
 import { neo4jgraphql, cypherQuery, cypherMutation } from 'neo4j-graphql-js';
 const { AuthenticationError } = require('apollo-server');
 
+const { limits } = require('../../lib/limits');
+
 import { getUserByAddress } from '../../controllers/auth';
-import { getTagByName, createTagWithUser } from '../../controllers/tags';
+import {
+  getTagByName,
+  getTagCount,
+  createTagWithUser,
+} from '../../controllers/tags';
 
 dotenv.config();
 const JWT_SECRET = process.env.JWT_SECRET;
@@ -29,6 +35,30 @@ async function CreateTag(_parent, _args, ctx, _info) {
           'Authentication address is invalid, please log in '
         );
       }
+
+      var limit = limits.find((obj) => {
+        return obj.state === dbUser.state;
+      });
+
+      console.log(limit.tags);
+
+      if (limit.tags === 0) {
+        session.close();
+        throw new AuthenticationError('User cannot create tags ');
+        return;
+      }
+
+      // how many tags do they already have?
+
+      const dbTagCount = await getTagCount(session, address);
+
+      console.log(dbTagCount.toNumber());
+
+      if (!dbTagCount || dbTagCount.toNumber() >= limit.tags) {
+        session.close();
+        throw new AuthenticationError('Limit reached');
+      }
+
       let dbTag = false;
       const dbExistingTag = await getTagByName(session, _args.name);
 

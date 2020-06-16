@@ -27,6 +27,16 @@ export default function UserProfile(props) {
             </dd>
           </>
         )}
+        <dt>Account freedom</dt>
+        {props.user.limits.map((l, i) => {
+          return (
+            <dd>
+              <MonoStyles>
+                {l.name} {l.number}
+              </MonoStyles>
+            </dd>
+          );
+        })}
       </dl>
     </UserProfileStyles>
   );

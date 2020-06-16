@@ -5,7 +5,10 @@ const { AuthenticationError } = require('apollo-server');
 import dotenv from 'dotenv';
 dotenv.config();
 const JWT_SECRET = process.env.JWT_SECRET;
+import { getUserByAddress } from '../controllers/auth';
+
 const { serverStatus } = require('../status');
+const { limits } = require('../lib/limits');
 
 // Returns a function, that, when invoked, will only be triggered at most once
 // during a given window of time. Normally, the throttled function will run
@@ -54,8 +57,42 @@ const Query = {
     if (token) {
       try {
         const { address } = jwt.verify(token, JWT_SECRET);
-        return { address: address };
+
+        let session = context.driver.session();
+        // get the user info by address
+        let dbUser = await getUserByAddress(session, address);
+
+        if (!dbUser.state) {
+          dbUser.state = 'Undefined';
+        }
+
+        console.log(limits);
+
+        var limit = limits.find((obj) => {
+          return obj.state === dbUser.state;
+        });
+
+        console.log(limit);
+
+        dbUser.limits = [];
+
+        for (var key in limit) {
+          // skip loop if the property is from prototype
+          if (!limit.hasOwnProperty(key)) continue;
+          if (key === 'state') {
+            continue;
+          }
+          // console.log(key);
+          // console.log(limit[key]);
+          dbUser.limits.push({ name: key, number: limit[key] });
+        }
+
+        console.log(dbUser);
+        session.close();
+
+        return dbUser;
       } catch (err) {
+        console.log(err);
         throw new AuthenticationError(
           'Authentication token is invalid, please log in '
         );

@@ -7,6 +7,7 @@ const Textarea = (props) => {
 
   return (
     <TextareaStyles
+      disabled={props.disabled}
       as={props.as}
       name={props.name}
       value={props.value}

@@ -32,7 +32,7 @@ async function getUserByAddress(session, address) {
     // 300000ms is 5 mins
     const result = await session.run(
       `MATCH (user:User {address: $address})
-      RETURN user { .address } AS user`,
+      RETURN user { .address, .state } AS user`,
       { address }
     );
 

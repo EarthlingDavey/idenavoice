@@ -1,8 +1,8 @@
 import styled, { css } from 'styled-components';
 
 const TagCreateStyles = styled.div`
-  display: flex;
-  align-items: center;
+  /* display: flex;
+  align-items: center; */
 `;
 
 const TagVotingStyles = styled.div`

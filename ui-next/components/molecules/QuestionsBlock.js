@@ -45,6 +45,11 @@ const QUESTIONS_QUERY = gql`
     }
     viewer {
       address
+      state
+      limits {
+        name
+        number
+      }
     }
   }
 `;
@@ -63,7 +68,7 @@ export function QuestionsBlock(props) {
     pollInterval: 3500,
   });
 
-  if (loading) {
+  if (loading || !data) {
     return <p>Loading</p>;
   }
   if (

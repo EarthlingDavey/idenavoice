@@ -55,6 +55,27 @@ async function getTagByName(session, tagName) {
     return false;
   }
 }
+async function getTagCount(session, address) {
+  try {
+    const result = await session.run(
+      `
+      MATCH (tag:Tag)-[r:USER_TAG]->(user:User {address: $address})
+      RETURN COUNT(tag)`,
+      { address }
+    );
+
+    // console.log(result.records[0]);
+
+    const singleRecord = result.records[0];
+    if (!singleRecord) {
+      return false;
+    }
+    return singleRecord.get(0);
+  } catch (error) {
+    console.log(error);
+    return false;
+  }
+}
 async function getTagByIdAndUser(session, tagId, address) {
   try {
     const result = await session.run(
@@ -139,6 +160,7 @@ module.exports = {
   getTagByName,
   tagAndQuestionExists,
   getTagByIdAndUser,
+  getTagCount,
   createTagWithUser,
   tagsToRecount,
   updateTagCount,

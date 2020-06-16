@@ -5,6 +5,7 @@ type User {
   age: Int
   state: String
   actions: [Action] @relation(name: "USER_ACTION", direction: "IN")
+  limits: [Limit]
 }
 
 enum State {
@@ -12,6 +13,11 @@ enum State {
   Verified
   Human
   Suspended
+}
+
+type Limit {
+  name: String!
+  number: Float!
 }
 
 type Question {

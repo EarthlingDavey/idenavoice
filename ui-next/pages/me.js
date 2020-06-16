@@ -14,6 +14,10 @@ const VIEWER_QUERY = gql`
       address
       age
       state
+      limits {
+        name
+        number
+      }
     }
   }
 `;

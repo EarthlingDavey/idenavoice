@@ -1,3 +1,5 @@
+import { toast } from 'react-toastify';
+
 import { TagCreateStyles } from './TagStyles';
 import Textarea from '../atoms/Textarea';
 
@@ -15,24 +17,46 @@ const CREATE_TAG = gql`
 
 export default function TagCreate(props) {
   let textarea;
-  const [CreateTag, { data }] = useMutation(CREATE_TAG);
+  const [CreateTag, { data, error }] = useMutation(CREATE_TAG);
+
+  var tagsLimit = props.userLimits.find((obj) => {
+    return obj.name === 'tags';
+  });
+
+  if (error) {
+    toast('Oops an error occurred');
+  }
+  if (!error && data) {
+    toast('Tag created');
+  }
 
   return (
     <TagCreateStyles>
+      <p>You can create {tagsLimit.number} tags</p>
       <form
+        disabled={tagsLimit.number === 0}
         onSubmit={(e) => {
           e.preventDefault();
           // console.log(textarea);
-          CreateTag({
-            variables: { name: textarea.value },
-            refetchQueries: ['GET_TAGS'],
-          });
-          textarea.value = '';
+
+          var letters = /^[a-z]+$/;
+
+          if (textarea.value.match(letters)) {
+            CreateTag({
+              variables: { name: textarea.value },
+              refetchQueries: ['GET_TAGS'],
+            });
+
+            textarea.value = '';
+          } else {
+            toast('Tags should be all lower case, no spaces. Try again ');
+          }
         }}
       >
         <Textarea
           //  handleChange={this.handleChange}
           //   value={this.state.question}
+          disabled={tagsLimit.number === 0}
           as="input"
           passRef={(node) => {
             textarea = node;
@@ -40,7 +64,9 @@ export default function TagCreate(props) {
           name="tag"
           placeholder="Type your tag here"
         ></Textarea>
-        <button type="submit">Add Tag</button>
+        <button disabled={tagsLimit.number === 0} type="submit">
+          Add Tag
+        </button>
       </form>
     </TagCreateStyles>
   );
