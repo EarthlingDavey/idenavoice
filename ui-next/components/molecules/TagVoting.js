@@ -11,7 +11,7 @@ let toasts = {};
 
 const GET_TAGS = gql`
   query GET_TAGS($filter: _ActionFilter) {
-    Tag {
+    Tag(orderBy: voteCountCache_desc) {
       id
       name
       actions(filter: $filter) {

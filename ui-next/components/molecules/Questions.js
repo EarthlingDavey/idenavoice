@@ -27,7 +27,7 @@ const QUESTIONS_QUERY = gql`
         name
       }
     }
-    Tag {
+    Tag(orderBy: voteCountCache_desc) {
       id
       name
     }

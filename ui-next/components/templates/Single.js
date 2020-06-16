@@ -84,7 +84,7 @@ const TRANSACTION_QUERY = gql`
         }
       }
     }
-    Tag {
+    Tag(orderBy: voteCountCache_desc) {
       id
       name
     }

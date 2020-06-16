@@ -12,7 +12,7 @@ import { CheckboxInputStyles } from '../atoms/CheckboxInputStyles';
 
 const GET_TAGS = gql`
   query GET_TAGS {
-    Tag {
+    Tag(orderBy: voteCountCache_desc) {
       id
       name
     }

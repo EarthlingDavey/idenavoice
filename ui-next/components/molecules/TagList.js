@@ -6,7 +6,7 @@ import gql from 'graphql-tag';
 
 const GET_TAGS = gql`
   query GET_TAGS($filter: _TagFilter) {
-    Tag(filter: $filter) {
+    Tag(filter: $filter, orderBy: voteCountCache_desc) {
       id
       name
       voteCountCache
