@@ -27,7 +27,8 @@ module.exports = {
     JWT_SECRET: 'changeme',
   },
   env: {
-    url: process.env.WEB_URI
+    ENV: process.env.NODE_ENV,
+    url: process.env.NODE_ENVWEB_URI
       ? process.env.WEB_URI
       : 'https://' + process.env.VERCEL_URL,
     endpoint,

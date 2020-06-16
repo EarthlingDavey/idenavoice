@@ -119,14 +119,14 @@ export default function TagVoting(props) {
   return (
     <TagVotingStyles>
       <p>
-        You have 100 vote credits so spread across the following categories.
+        You have 100 vote credits to spread across the following categories.
       </p>
       <p>Questions from tags with the most votes are shown on the homepage.</p>
       <p>
         Accounts of all statuses can assign preferences for each tag.
         <br />
-        Your vote is only counted towards totals if you are Verified or Human
-        status.
+        Your preferences are only counted towards totals if you are Verified or
+        Human status.
       </p>
 
       <TagVotingInner

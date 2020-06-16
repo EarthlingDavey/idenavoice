@@ -16,11 +16,13 @@ const MainStyles = styled.main`
   min-height: 75vh;
 `;
 
+// console.log(process.env.ENV);
+
 const Layout = (props) => (
   <div>
     <Header />
     <MainStyles>{props.children}</MainStyles>
-    <Footer />
+    {process.env.ENV === 'development' && <Footer />}
   </div>
 );
 
