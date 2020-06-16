@@ -78,7 +78,10 @@ export function QuestionsBlock(props) {
   //   return <p>No questions</p>;
   // }
 
-  const questions = data.Tag[0].questions;
+  const questions =
+    data.Tag && data.Tag[0] && data.Tag[0].questions
+      ? data.Tag[0].questions
+      : [];
 
   return (
     <QuestionsStyles

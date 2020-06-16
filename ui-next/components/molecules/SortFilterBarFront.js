@@ -42,28 +42,28 @@ export default function SortFilterBarFront(props) {
   if (props.selectedTags.length === 0 && data && data.Tag.length > 0) {
     selectedTags = data.Tag[0].id;
   }
-  return (
-    <>
-      {data && data.Tag && data.Tag.length && (
-        <SortFilterBarStyles
-          SelectStyles={SelectStyles}
-          CheckboxInputStyles={CheckboxInputStyles}
-        >
-          <ul>
-            {data.Tag.map((t, i) => {
-              return (
-                <Tag
-                  onClick={(e) => props.handleTagClick(e, t.id)}
-                  as="li"
-                  name={t.name}
-                  key={t.id}
-                  selected={selectedTags.includes(t.id) ? true : false}
-                ></Tag>
-              );
-            })}
-          </ul>
-        </SortFilterBarStyles>
-      )}
-    </>
-  );
+  if (data && data.Tag && data.Tag.length) {
+    return (
+      <SortFilterBarStyles
+        SelectStyles={SelectStyles}
+        CheckboxInputStyles={CheckboxInputStyles}
+      >
+        <ul>
+          {data.Tag.map((t, i) => {
+            return (
+              <Tag
+                onClick={(e) => props.handleTagClick(e, t.id)}
+                as="li"
+                name={t.name}
+                key={t.id}
+                selected={selectedTags.includes(t.id) ? true : false}
+              ></Tag>
+            );
+          })}
+        </ul>
+      </SortFilterBarStyles>
+    );
+  } else {
+    return <p>Not tags have been created yet</p>;
+  }
 }
