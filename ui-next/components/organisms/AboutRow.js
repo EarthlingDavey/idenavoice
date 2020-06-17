@@ -37,9 +37,9 @@ export default class AboutRow extends React.Component {
             to ask questions and answer them.
           </p>
           <p>
-            It's all on the public Idena block chain. Votes can be cast and
-            results can be read, saved, and shown anywhere. They're effectively
-            uncensorable.
+            Questions and votes are all on the public Idena block chain. Votes
+            can be cast and results can be read, saved, and shown anywhere.
+            They're effectively uncensorable.
           </p>
           {/* <div className="lower">
             <a href="https://idena.io">idena.io</a>
