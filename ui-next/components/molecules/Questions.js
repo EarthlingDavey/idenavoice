@@ -9,15 +9,10 @@ class Question extends React.Component {
   }
 
   state = {
-    selectedTags: [],
+    selectedTags: [this.props.tags[0].id],
   };
 
   handleTagClick(e, tagId) {
-    if (e) {
-      e.preventDefault();
-    }
-    console.log(e, tagId);
-
     this.setState((prevState) => ({
       selectedTags: [tagId],
     }));
@@ -26,9 +21,13 @@ class Question extends React.Component {
   render() {
     return (
       <>
-        <QuestionsBlock selectedTags={this.state.selectedTags}>
+        <QuestionsBlock
+          tags={this.props.tags}
+          selectedTags={this.state.selectedTags}
+        >
           <SortFilterBarFront
             handleTagClick={this.handleTagClick}
+            tags={this.props.tags}
             selectedTags={this.state.selectedTags}
           ></SortFilterBarFront>
         </QuestionsBlock>

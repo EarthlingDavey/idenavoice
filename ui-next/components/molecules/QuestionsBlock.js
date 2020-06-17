@@ -15,33 +15,33 @@ import Tag from '../atoms/Tag';
 import { ButtonStyles, ButtonGroupStyles } from '../atoms/ButtonStyles';
 
 const QUESTIONS_QUERY = gql`
-  query QuestionsQuery($tagFilter: _TagFilter) {
-    Tag(orderBy: voteCountCache_desc, first: 1, filter: $tagFilter) {
+  query QuestionsQuery($filter: _QuestionFilter) {
+    Question(orderBy: epoch_desc, first: 8, filter: $filter) {
       id
       name
-      questions(orderBy: epoch_desc, first: 8) {
-        id
+      timestamp {
+        formatted
+      }
+      answers {
         name
-        timestamp {
-          formatted
-        }
-        answers {
-          name
-          countNewestOnly
-        }
-        transaction {
-          hash
-          user {
-            address
-            age
-            state
-          }
-        }
-        tags {
-          id
-          name
+        countNewestOnly
+      }
+      transaction {
+        hash
+        user {
+          address
+          age
+          state
         }
       }
+      tags {
+        id
+        name
+      }
+    }
+    Tag {
+      id
+      name
     }
     viewer {
       address
@@ -55,15 +55,17 @@ const QUESTIONS_QUERY = gql`
 `;
 
 export function QuestionsBlock(props) {
-  let tagFilter = {};
+  let questionFilter = {};
 
   if (props.selectedTags.length > 0) {
-    tagFilter = { id: props.selectedTags[0] };
+    questionFilter = { tags_some: { id: props.selectedTags[0] } };
   }
+
+  // console.log(questionFilter);
 
   const { loading, error, data, refetch } = useQuery(QUESTIONS_QUERY, {
     variables: {
-      tagFilter,
+      filter: questionFilter,
     },
     pollInterval: 3500,
   });
@@ -71,17 +73,8 @@ export function QuestionsBlock(props) {
   if (loading || !data) {
     return <p>Loading</p>;
   }
-  // if (
-  //   (data.Tag[0] && !data.Tag[0].questions) ||
-  //   data.Tag[0].questions.length == 0
-  // ) {
-  //   return <p>No questions</p>;
-  // }
 
-  const questions =
-    data.Tag && data.Tag[0] && data.Tag[0].questions
-      ? data.Tag[0].questions
-      : [];
+  const questions = data.Question ? data.Question : [];
 
   return (
     <QuestionsStyles
@@ -93,7 +86,7 @@ export function QuestionsBlock(props) {
       {questions.map((question, i) => {
         return (
           <Question
-            key={question.transaction.hash}
+            key={question.id}
             question={question}
             allTags={data.Tag}
             signedIn={data.viewer ? true : false}
