@@ -28,7 +28,7 @@ module.exports = {
   },
   env: {
     ENV: process.env.NODE_ENV,
-    url: process.env.NODE_ENVWEB_URI
+    url: process.env.WEB_URI
       ? process.env.WEB_URI
       : 'https://' + process.env.VERCEL_URL,
     endpoint,
