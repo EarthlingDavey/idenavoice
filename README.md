@@ -46,13 +46,24 @@ In response to the challenge, the following features were recently added. In con
 
 ## Technical overview
 
-This repository is related to the website. It contains 3 root folders `/ui-next` and `api` - and `nginx`, but that is related to local development only.
+This repository is related to the website. It contains 3 root folders `/ui-next` and `/api` - and `/nginx`, but that is related to local development only.
+
+### Project structure
+
+| Service | Repository              | Purpose                                                                                  |
+| ------- | ----------------------- | ---------------------------------------------------------------------------------------- |
+| ui-next | [idenavoice][iv]        | Website frontend                                                                         |
+| api     | [idenavoice][iv]        | Public API                                                                               |
+| nginx   | [idenavoice][iv]        | Local development                                                                        |
+| node    | [idenavoiceserver][ivs] | [Idena node][idena-go]^ rpc allows for querying of Idena blockchain                      |
+| neo4j   | [idenavoiceserver][ivs] | [Neo4j Database][n4jc], cache for the on-chain voting data, and store for off-chain data |
+| runner  | [idenavoiceserver][ivs] | Task runner, keeps database in sync with the chain                                       |
+
+(^) = Credit is due to Rinzler78 for the [Idena node docker container][idena-go-docker]
 
 The ui is React & Nextjs - it serves the website at [idenavoice.com](https://idenavoice.com)
 
 And the api is a public api using apollo-server - it can be accessed at [idenavoice.com/graphql](https://idenavoice.com/graphql)
-
-TBC ...
 
 ## Development
 
@@ -84,3 +95,9 @@ This is the simplest way to work on the frontend. It connects to the live graphq
 1. Max length on text input
 1. Text input placeholder contrast
 1. Notify if question field is empty
+
+[iv]: https://github.com/EarthlingDavey/idenavoice 'idenavoice frontend & API'
+[ivs]: https://github.com/EarthlingDavey/idenavoiceserver 'idenavoice backend & database'
+[n4jc]: https://neo4j.com/download-center/#community 'Neo4j community server database'
+[idena-go]: https://github.com/idena-network/idena-go 'Golang implementation of the Idena network node'
+[idena-go-docker]: https://github.com/Rinzler78/docker.idena-node 'Docker image for Idena network node'
